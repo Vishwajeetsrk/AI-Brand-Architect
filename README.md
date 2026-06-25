@@ -1,8 +1,8 @@
-# AI Brand Architect - Design System
+# NEXORA — AI Brand Architect
 
 ## Overview
 
-The AI Brand Architect design system is a comprehensive component library and design token system for building AI-powered brand management dashboards. Built with React, TypeScript, Tailwind CSS, and Radix UI.
+NEXORA is a comprehensive AI-powered brand management platform built with React, TypeScript, Tailwind CSS, and Radix UI. It provides a full design system with 50+ UI components and 28+ application screens for brand strategy, content management, AI tools, analytics, and team collaboration.
 
 ## Quick Start
 
@@ -23,7 +23,7 @@ function MyPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Welcome to AI Brand Architect</CardTitle>
+        <CardTitle>Welcome to NEXORA</CardTitle>
       </CardHeader>
       <CardContent>
         <Button>Get Started</Button>
@@ -39,7 +39,7 @@ function MyPage() {
 
 | Token | Hex | Description |
 |-------|-----|-------------|
-| `--primary` | `#7c3aed` | Primary brand color (purple) |
+| `--primary` | `#7c3aed` | Primary brand color (violet) |
 | `--background` | `#07091c` | Dark background |
 | `--foreground` | `#e2e8f0` | Light text |
 | `--card` | `#0c1022` | Card background |
@@ -98,10 +98,13 @@ function MyPage() {
 ## File Structure
 
 ```
-AI Brand Architect System/
+NEXORA/
+├── public/
+│   ├── logo.svg              # Primary logo mark
+│   ├── logo-horizontal.svg   # Horizontal logo with wordmark
+│   └── favicon.svg           # Favicon
 ├── design-system/
 │   ├── DESIGN.md              # Brand specification
-│   ├── README.md              # This file
 │   ├── components/
 │   │   ├── ui/                # 48 UI components
 │   │   └── figma/             # Figma components
@@ -110,17 +113,22 @@ AI Brand Architect System/
 │   ├── assets/                # Images & illustrations
 │   └── docs/                  # Documentation
 ├── src/                       # Source files
+│   ├── App.tsx                # Main application (28 screens)
+│   ├── main.tsx               # Entry point
+│   └── index.css              # Tailwind theme
 ├── guidelines/                # Brand guidelines
-└── package.json               # Dependencies
+└── package.json
 ```
 
 ## Documentation
 
-- [DESIGN.md](./design-system/DESIGN.md) - Complete brand specification
-- [Guidelines.md](./guidelines/Guidelines.md) - Brand usage guidelines
+- [DESIGN.md](./design-system/DESIGN.md) — Complete brand specification
+- [Guidelines.md](./guidelines/Guidelines.md) — Brand usage guidelines
+- [CONTRIBUTING.md](./CONTRIBUTING.md) — How to contribute
 
 ## Brand
 
-**Brand Name:** AI Brand Architect
+**Brand Name:** NEXORA
+**Product:** AI Brand Architect
 **Version:** 1.0.0
 **Last Updated:** June 25, 2026
