@@ -1,0 +1,46 @@
+{
+    "totalFiles":  88,
+    "totalCharacters":  2,
+    "category":  "3d-characters",
+    "type":  "PBR Character Assets",
+    "brand":  "AI Brand Architect",
+    "lastUpdated":  "2026-06-25",
+    "characters":  [
+                       {
+                           "name":  "character-female-party",
+                           "textures":  {
+                                            "AO":  6,
+                                            "ResourceMap":  4,
+                                            "Normal":  5,
+                                            "Diffuse":  5,
+                                            "Glow":  6,
+                                            "Roughness":  6,
+                                            "Metallic":  6,
+                                            "Opacity":  5
+                                        },
+                           "fbxCount":  1,
+                           "fileCount":  44,
+                           "fbxFiles":  "party-f-0001.fbx",
+                           "displayName":  "FEMALE PARTY",
+                           "textureCount":  43
+                       },
+                       {
+                           "name":  "character-male-party",
+                           "textures":  {
+                                            "AO":  6,
+                                            "ResourceMap":  4,
+                                            "Normal":  5,
+                                            "Diffuse":  5,
+                                            "Glow":  6,
+                                            "Roughness":  6,
+                                            "Metallic":  6,
+                                            "Opacity":  5
+                                        },
+                           "fbxCount":  1,
+                           "fileCount":  44,
+                           "fbxFiles":  "party-m-0001.fbx",
+                           "displayName":  "MALE PARTY",
+                           "textureCount":  43
+                       }
+                   ]
+}

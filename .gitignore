@@ -1,0 +1,33 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
+*.pem
+.vite
+coverage
+.vercel
+.turbo
+
+# Large 3D assets (use Git LFS instead)
+3D Icon/
+design-system/assets/3d-characters/
+design-system/assets/3d-icons/
+design-system/assets/illustrations/
+design-system/assets/dashboard/
+design-system/assets/gradients/
+design-system/assets/patterns/
+src/imports/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

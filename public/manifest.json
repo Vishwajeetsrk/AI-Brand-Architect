@@ -1,0 +1,23 @@
+{
+  "name": "NEXORA - AI Brand Architect",
+  "short_name": "NEXORA",
+  "description": "Intelligent Brand Building Powered by AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07091c",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "/NEXORA Logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Final.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

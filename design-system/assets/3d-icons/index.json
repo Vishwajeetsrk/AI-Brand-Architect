@@ -1,0 +1,207 @@
+{
+    "lastUpdated":  "2026-06-25",
+    "styles":  [
+                   "clay",
+                   "color",
+                   "gradient",
+                   "premium"
+               ],
+    "category":  "3d-icons",
+    "brand":  "AI Brand Architect",
+    "totalIcons":  17,
+    "icons":  [
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "bookmark",
+                      "fileCount":  12,
+                      "displayName":  "BOOKMARK"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  0,
+                                     "color":  0,
+                                     "gradient":  0,
+                                     "premium":  0
+                                 },
+                      "name":  "character",
+                      "fileCount":  1,
+                      "displayName":  "CHARACTER"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "clock",
+                      "fileCount":  12,
+                      "displayName":  "CLOCK"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "computer",
+                      "fileCount":  12,
+                      "displayName":  "COMPUTER"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "fire",
+                      "fileCount":  12,
+                      "displayName":  "FIRE"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "folder",
+                      "fileCount":  12,
+                      "displayName":  "FOLDER"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "gift",
+                      "fileCount":  12,
+                      "displayName":  "GIFT"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  0,
+                                     "color":  2,
+                                     "gradient":  0,
+                                     "premium":  0
+                                 },
+                      "name":  "google",
+                      "fileCount":  2,
+                      "displayName":  "GOOGLE"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "heart",
+                      "fileCount":  12,
+                      "displayName":  "HEART"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "medal",
+                      "fileCount":  12,
+                      "displayName":  "MEDAL"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "money",
+                      "fileCount":  12,
+                      "displayName":  "MONEY"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "notebook",
+                      "fileCount":  12,
+                      "displayName":  "NOTEBOOK"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "painting",
+                      "fileCount":  12,
+                      "displayName":  "PAINTING"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "rocket",
+                      "fileCount":  12,
+                      "displayName":  "ROCKET"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  0,
+                                     "color":  1,
+                                     "gradient":  0,
+                                     "premium":  0
+                                 },
+                      "name":  "tools",
+                      "fileCount":  1,
+                      "displayName":  "TOOLS"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  0,
+                                     "color":  1,
+                                     "gradient":  0,
+                                     "premium":  0
+                                 },
+                      "name":  "travel",
+                      "fileCount":  1,
+                      "displayName":  "TRAVEL"
+                  },
+                  {
+                      "styles":  {
+                                     "clay":  3,
+                                     "color":  3,
+                                     "gradient":  3,
+                                     "premium":  3
+                                 },
+                      "name":  "video",
+                      "fileCount":  12,
+                      "displayName":  "VIDEO"
+                  }
+              ],
+    "views":  [
+                  "dynamic",
+                  "front",
+                  "iso"
+              ],
+    "totalFiles":  161
+}

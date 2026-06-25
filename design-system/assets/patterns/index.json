@@ -1,0 +1,33 @@
+{
+    "assets":  [
+                   {
+                       "extension":  ".svg",
+                       "name":  "pattern-abstract-element.svg",
+                       "size":  3810
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "pattern-decorative-border.svg",
+                       "size":  3762
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "pattern-geometric-small.svg",
+                       "size":  1582
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "pattern-icon-element.svg",
+                       "size":  1275
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "pattern-ui-accent.svg",
+                       "size":  3844
+                   }
+               ],
+    "category":  "patterns",
+    "lastUpdated":  "2026-06-25",
+    "count":  5,
+    "brand":  "AI Brand Architect"
+}
