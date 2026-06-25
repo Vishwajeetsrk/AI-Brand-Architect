@@ -1,13 +1,40 @@
 import { useState, lazy, Suspense } from "react";
 import { AnimatePresence } from "motion/react";
 import { Grid } from "lucide-react";
-import { Screen, AppLayout, APP_SCREENS, LABEL_MAP, Card } from "./components/shared";
+import { Screen, AppLayout, APP_SCREENS, LABEL_MAP } from "./components/shared";
 
-const Auth = lazy(() => import("./screens/auth"));
-const Overview = lazy(() => import("./screens/overview"));
-const Tools = lazy(() => import("./screens/tools"));
-const Workspace = lazy(() => import("./screens/workspace"));
-const BrandSettings = lazy(() => import("./screens/brand-settings"));
+const Landing = lazy(() => import("./screens/auth").then(m => ({ default: m.Landing })));
+const SignIn = lazy(() => import("./screens/auth").then(m => ({ default: m.SignIn })));
+const SignUp = lazy(() => import("./screens/auth").then(m => ({ default: m.SignUp })));
+const Forgot = lazy(() => import("./screens/auth").then(m => ({ default: m.Forgot })));
+const Verify = lazy(() => import("./screens/auth").then(m => ({ default: m.Verify })));
+const Onboard = lazy(() => import("./screens/auth").then(m => ({ default: m.Onboard })));
+
+const Dashboard = lazy(() => import("./screens/overview").then(m => ({ default: m.Dashboard })));
+const CommandCenter = lazy(() => import("./screens/overview").then(m => ({ default: m.CommandCenter })));
+const MissionControl = lazy(() => import("./screens/overview").then(m => ({ default: m.MissionControl })));
+const Project = lazy(() => import("./screens/overview").then(m => ({ default: m.Project })));
+
+const ModelPlayground = lazy(() => import("./screens/tools").then(m => ({ default: m.ModelPlayground })));
+const ImageGen = lazy(() => import("./screens/tools").then(m => ({ default: m.ImageGen })));
+const VoiceStudio = lazy(() => import("./screens/tools").then(m => ({ default: m.VoiceStudio })));
+const ChatScreen = lazy(() => import("./screens/tools").then(m => ({ default: m.ChatScreen })));
+
+const Agents = lazy(() => import("./screens/workspace").then(m => ({ default: m.Agents })));
+const Tasks = lazy(() => import("./screens/workspace").then(m => ({ default: m.Tasks })));
+const Workflows = lazy(() => import("./screens/workspace").then(m => ({ default: m.Workflows })));
+const MCPTools = lazy(() => import("./screens/workspace").then(m => ({ default: m.MCPTools })));
+const CMS = lazy(() => import("./screens/workspace").then(m => ({ default: m.CMS })));
+const Knowledge = lazy(() => import("./screens/workspace").then(m => ({ default: m.Knowledge })));
+const Templates = lazy(() => import("./screens/workspace").then(m => ({ default: m.Templates })));
+const WebsitePlan = lazy(() => import("./screens/workspace").then(m => ({ default: m.WebsitePlan })));
+
+const BrandDNA = lazy(() => import("./screens/brand-settings").then(m => ({ default: m.BrandDNA })));
+const Creative = lazy(() => import("./screens/brand-settings").then(m => ({ default: m.Creative })));
+const Analytics = lazy(() => import("./screens/brand-settings").then(m => ({ default: m.Analytics })));
+const APIKeys = lazy(() => import("./screens/brand-settings").then(m => ({ default: m.APIKeys })));
+const Team = lazy(() => import("./screens/brand-settings").then(m => ({ default: m.Team })));
+const SettingsScreen = lazy(() => import("./screens/brand-settings").then(m => ({ default: m.SettingsScreen })));
 
 function Loading() {
   return (
@@ -22,44 +49,42 @@ export default function App() {
   const nav = (s: Screen) => setScreen(s);
 
   const isPublic = ["landing", "signin", "signup", "forgot", "verify"].includes(screen);
-  const isOnboard = screen === "onboard";
-  const isApp = APP_SCREENS.includes(screen);
 
   const renderScreen = () => {
     switch (screen) {
-      case "landing": return <Auth.Landing nav={nav} />;
-      case "signin": return <Auth.SignIn nav={nav} />;
-      case "signup": return <Auth.SignUp nav={nav} />;
-      case "forgot": return <Auth.Forgot nav={nav} />;
-      case "verify": return <Auth.Verify nav={nav} />;
-      case "onboard": return <Auth.Onboard nav={nav} />;
-      case "dashboard": return <Overview.Dashboard nav={nav} />;
-      case "command": return <Overview.CommandCenter nav={nav} />;
-      case "mission": return <Overview.MissionControl nav={nav} />;
-      case "project": return <Overview.Project nav={nav} />;
-      case "playground": return <Tools.ModelPlayground />;
-      case "image-gen": return <Tools.ImageGen />;
-      case "voice": return <Tools.VoiceStudio />;
-      case "chat": return <Tools.ChatScreen />;
-      case "agents": return <Workspace.Agents nav={nav} />;
-      case "tasks": return <Workspace.Tasks />;
-      case "workflows": return <Workspace.Workflows nav={nav} />;
-      case "mcp": return <Workspace.MCPTools />;
-      case "cms": return <Workspace.CMS />;
-      case "knowledge": return <Workspace.Knowledge />;
-      case "templates": return <Workspace.Templates />;
-      case "website-plan": return <Workspace.WebsitePlan />;
-      case "brand-dna": return <BrandSettings.BrandDNA />;
-      case "creative": return <BrandSettings.Creative />;
-      case "analytics": return <BrandSettings.Analytics />;
-      case "api-keys": return <BrandSettings.APIKeys />;
-      case "team": return <BrandSettings.Team />;
-      case "settings": return <BrandSettings.SettingsScreen />;
-      default: return <Overview.Dashboard nav={nav} />;
+      case "landing": return <Landing nav={nav} />;
+      case "signin": return <SignIn nav={nav} />;
+      case "signup": return <SignUp nav={nav} />;
+      case "forgot": return <Forgot nav={nav} />;
+      case "verify": return <Verify nav={nav} />;
+      case "onboard": return <Onboard nav={nav} />;
+      case "dashboard": return <Dashboard nav={nav} />;
+      case "command": return <CommandCenter nav={nav} />;
+      case "mission": return <MissionControl nav={nav} />;
+      case "project": return <Project nav={nav} />;
+      case "playground": return <ModelPlayground />;
+      case "image-gen": return <ImageGen />;
+      case "voice": return <VoiceStudio />;
+      case "chat": return <ChatScreen />;
+      case "agents": return <Agents nav={nav} />;
+      case "tasks": return <Tasks />;
+      case "workflows": return <Workflows nav={nav} />;
+      case "mcp": return <MCPTools />;
+      case "cms": return <CMS />;
+      case "knowledge": return <Knowledge />;
+      case "templates": return <Templates />;
+      case "website-plan": return <WebsitePlan />;
+      case "brand-dna": return <BrandDNA />;
+      case "creative": return <Creative />;
+      case "analytics": return <Analytics />;
+      case "api-keys": return <APIKeys />;
+      case "team": return <Team />;
+      case "settings": return <SettingsScreen />;
+      default: return <Dashboard nav={nav} />;
     }
   };
 
-  if (isPublic || isOnboard) {
+  if (isPublic || screen === "onboard") {
     return (
       <div className="min-h-screen bg-[#07091c]">
         <Suspense fallback={<Loading />}>
