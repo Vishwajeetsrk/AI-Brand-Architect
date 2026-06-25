@@ -212,7 +212,7 @@ function Sidebar({ cur, nav, collapsed, setCollapsed }: {
     <aside className={`flex flex-col h-full bg-sidebar border-r border-white/[0.05] transition-all duration-300 flex-shrink-0 ${collapsed?"w-14":"w-52"}`}>
       {/* Logo */}
       <div className={`flex items-center gap-2 border-b border-white/[0.05] py-4 ${collapsed?"justify-center px-0":"px-4"}`}>
-        <img src="/NEXORA Logo.png" alt="NEXORA" className="w-7 h-7 rounded-lg flex-shrink-0" />
+        <img src="/logo.svg" alt="NEXORA" className="w-7 h-7 flex-shrink-0" />
         {!collapsed&&(
           <div><p className="text-sm font-black text-white leading-none">NEXORA</p><p className="text-[9px] text-violet-400 font-bold tracking-widest">AI BRAND ARCHITECT</p></div>
         )}
@@ -336,7 +336,7 @@ function Landing({ nav }: { nav:(s:Screen)=>void }) {
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06] bg-[#07091c]/80 backdrop-blur">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <img src="/NEXORA Logo.png" alt="NEXORA" className="w-7 h-7 rounded-lg" />
+            <img src="/logo.svg" alt="NEXORA" className="w-7 h-7" />
             <span className="font-black text-white text-sm">NEXORA</span>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-xs text-slate-500">
@@ -421,7 +421,7 @@ function Landing({ nav }: { nav:(s:Screen)=>void }) {
       {/* Footer */}
       <footer className="border-t border-white/[0.05] py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2"><img src="/NEXORA Logo.png" alt="NEXORA" className="w-5 h-5 rounded-md" /><span className="text-xs font-bold text-white">NEXORA</span></div>
+          <div className="flex items-center gap-2"><img src="/logo.svg" alt="NEXORA" className="w-5 h-5" /><span className="text-xs font-bold text-white">NEXORA</span></div>
           <p className="text-xs text-slate-700">© 2024 NEXORA. All rights reserved.</p>
         </div>
       </footer>
@@ -435,7 +435,7 @@ function AuthWrap({ children, title, subtitle, nav }: { children: React.ReactNod
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-900/15 rounded-full blur-3xl"/>
       <motion.div {...fadeUp} className="w-full max-w-sm relative z-10">
         <div className="flex justify-center mb-6">
-          <div className="flex items-center gap-2"><div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center"><BrainCircuit size={13} className="text-white"/></div><span className="font-black text-white text-sm">Learnify AI</span></div>
+          <div className="flex items-center gap-2"><img src="/logo.svg" alt="NEXORA" className="w-7 h-7" /><span className="font-black text-white text-sm">NEXORA</span></div>
         </div>
         <Card className="p-7">
           <h2 className="text-xl font-bold text-white mb-0.5">{title}</h2>
@@ -450,7 +450,7 @@ function AuthWrap({ children, title, subtitle, nav }: { children: React.ReactNod
 function SignIn({ nav }: { nav:(s:Screen)=>void }) {
   const [e,setE]=useState("alex@learnify.ai"); const [p,setP]=useState("••••••••••"); const [sp,setSp]=useState(false);
   return (
-    <AuthWrap title="Welcome Back" subtitle="Sign in to your Learnify AI account." nav={nav}>
+    <AuthWrap title="Welcome Back" subtitle="Sign in to your NEXORA account." nav={nav}>
       <div className="space-y-2.5 mb-4">
         {[{label:"Email address",value:e,onChange:setE,icon:AtSign,type:"email"},{label:"Password",value:p,onChange:setP,icon:Lock,type:sp?"text":"password",extra:<button onClick={()=>setSp(!sp)} className="text-slate-600 hover:text-violet-400">{sp?<EyeOff size={12}/>:<Eye size={12}/>}</button>}].map(f=>(
           <div key={f.label}>
@@ -467,7 +467,7 @@ function SignIn({ nav }: { nav:(s:Screen)=>void }) {
 
 function SignUp({ nav }: { nav:(s:Screen)=>void }) {
   return (
-    <AuthWrap title="Create Account" subtitle="Start your Learnify AI journey." nav={nav}>
+    <AuthWrap title="Create Account" subtitle="Start your NEXORA journey." nav={nav}>
       <div className="space-y-2.5 mb-4">
         {[{label:"Full Name",icon:User,ph:"Alex Johnson"},{label:"Email",icon:AtSign,ph:"you@company.com"},{label:"Password",icon:Lock,ph:"Create strong password",type:"password"}].map(f=>(
           <div key={f.label}><label className="text-[11px] text-slate-500 block mb-1">{f.label}</label><Inp icon={f.icon} placeholder={f.ph} type={f.type}/></div>
@@ -500,7 +500,7 @@ function Verify({ nav }: { nav:(s:Screen)=>void }) {
       <div className="text-center py-2">
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-600/20 to-purple-600/15 border border-violet-500/25 flex items-center justify-center mx-auto mb-4"><CheckCircle size={28} className="text-violet-400"/></div>
         <p className="text-sm text-white font-semibold mb-1">Email Sent!</p>
-        <p className="text-xs text-slate-500 mb-5">Click the link in your email to verify your Learnify AI account.</p>
+        <p className="text-xs text-slate-500 mb-5">Click the link in your email to verify your NEXORA account.</p>
         <Btn variant="primary" className="w-full justify-center" onClick={()=>nav("onboard")}>Continue to Setup</Btn>
       </div>
     </AuthWrap>
@@ -519,7 +519,7 @@ function Onboard({ nav }: { nav:(s:Screen)=>void }) {
       <div className="absolute top-32 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-violet-900/10 rounded-full blur-3xl"/>
       <motion.div {...fadeUp} className="w-full max-w-md relative z-10">
         <div className="flex items-center justify-between mb-5 px-1">
-          <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-md bg-gradient-to-br from-violet-600 to-purple-700 flex items-center justify-center"><BrainCircuit size={11} className="text-white"/></div><span className="text-xs font-black text-white">Learnify AI</span></div>
+          <div className="flex items-center gap-2"><img src="/logo.svg" alt="NEXORA" className="w-6 h-6" /><span className="text-xs font-black text-white">NEXORA</span></div>
           <div className="flex items-center gap-1.5">
             {Array.from({length:total}).map((_,i)=><div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i<step?"bg-violet-500":"bg-white/10"} ${i===step-1?"w-6":"w-3"}`}/>)}
             <span className="text-[10px] text-slate-600 ml-1">{step}/{total}</span>
@@ -528,7 +528,7 @@ function Onboard({ nav }: { nav:(s:Screen)=>void }) {
         <Card className="p-7">
           <AnimatePresence mode="wait">
             {step===1&&<motion.div key="s1" {...fadeUp}>
-              <h2 className="text-xl font-bold text-white mb-0.5">Welcome to Learnify AI 👋</h2>
+              <h2 className="text-xl font-bold text-white mb-0.5">Welcome to NEXORA 👋</h2>
               <p className="text-xs text-slate-500 mb-5">What best describes your role?</p>
               <div className="grid grid-cols-2 gap-2">
                 {roles.map(r=>{const Ic=r.icon; return(
@@ -577,7 +577,7 @@ function Onboard({ nav }: { nav:(s:Screen)=>void }) {
             {step===5&&<motion.div key="s5" {...fadeUp} className="text-center">
               <div className="text-5xl mb-4">🚀</div>
               <h2 className="text-xl font-bold text-white mb-1">You're all set!</h2>
-              <p className="text-xs text-slate-500 mb-6">Your Learnify AI workspace is ready.</p>
+              <p className="text-xs text-slate-500 mb-6">Your NEXORA workspace is ready.</p>
               <div className="space-y-2 mb-6 text-left">
                 {["Workspace created","AI agents initialized","Mission Control ready","Brand studio configured"].map(i=>(
                   <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-emerald-500/5 border border-emerald-500/10"><CheckCircle size={12} className="text-emerald-400"/><span className="text-xs text-slate-300">{i}</span></div>
@@ -1181,7 +1181,7 @@ function ImageGen() {
 
 function VoiceStudio() {
   const [recording,setRecording]=useState(false);
-  const [text,setText]=useState("Welcome to Learnify AI. Your intelligent learning companion.");
+  const [text,setText]=useState("Welcome to NEXORA. Your intelligent brand architect.");
   const voices=["Nova (Feminine)","Echo (Masculine)","Shimmer (Neutral)","Fable (British)","Alloy (Versatile)","Onyx (Deep)"];
   const [voice,setVoice]=useState("Nova (Feminine)");
   const bars=Array.from({length:40},(_,i)=>Math.random()*100);
@@ -1226,11 +1226,11 @@ function ChatScreen() {
   const [input,setInput]=useState("");
   const [model,setModel]=useState("claude-3-5");
   const conv=[
-    {role:"ai",text:"Hi! I'm your Learnify AI assistant. I can help you with content creation, data analysis, code, research, and more. What would you like to work on?"},
+    {role:"ai",text:"Hi! I'm your NEXORA assistant. I can help you with brand strategy, content creation, data analysis, code, research, and more. What would you like to work on?"},
     {role:"user",text:"Help me write a product description for an AI-powered learning app."},
-    {role:"ai",text:"Here's a compelling product description:\n\n**Learnify AI — Learn Smarter, Not Harder**\n\nTransform the way you learn with Learnify AI, your personal AI-powered study companion. Our platform adapts to your unique learning style, breaks down complex topics into digestible insights, and provides personalized study plans that maximize retention.\n\n✓ AI-powered study plans\n✓ Instant concept explanations\n✓ Progress tracking & analytics\n✓ 50+ learning formats"},
+    {role:"ai",text:"Here's a compelling brand strategy:\n\n**NEXORA — Build Your Brand, Powered by AI**\n\nTransform the way you build brands with NEXORA, your AI-powered brand architect. Our platform adapts to your unique brand voice, breaks down complex strategies into actionable insights, and provides personalized brand plans that maximize impact.\n\n✓ AI-powered brand strategy\n✓ Instant brand concept generation\n✓ Progress tracking & analytics\n✓ 50+ brand formats"},
     {role:"user",text:"Can you make it shorter and punchier?"},
-    {role:"ai",text:"**Learnify AI**\n*Your AI study partner.*\n\nLearn 3x faster with personalized AI coaching. Break through any concept. Master any subject. All in one app.\n\n**Start learning for free →**"},
+    {role:"ai",text:"**NEXORA**\n*Your AI brand architect.*\n\nBuild brands 3x faster with personalized AI coaching. Break through any concept. Master any brand challenge. All in one platform.\n\n**Start building for free →**"},
   ];
   const models=["gpt-4o","claude-3-5","gemini-1-5","llama3-1"];
   const suggested=["Write a blog post","Analyze market data","Debug my code","Create a presentation","Research a topic"];
@@ -1269,7 +1269,7 @@ function ChatScreen() {
               {suggested.map(s=><button key={s} onClick={()=>setInput(s)} className="px-2.5 py-1 rounded-full border border-white/[0.07] text-[10px] text-slate-500 hover:text-violet-300 hover:border-violet-500/30 transition-all">{s}</button>)}
             </div>
             <div className="flex gap-2">
-              <Inp value={input} onChange={setInput} placeholder="Ask Learnify AI anything…" className="flex-1"/>
+              <Inp value={input} onChange={setInput} placeholder="Ask NEXORA anything…" className="flex-1"/>
               <Btn variant="primary" size="sm" icon={Send}>Send</Btn>
             </div>
           </div>

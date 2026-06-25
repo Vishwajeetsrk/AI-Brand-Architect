@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <!-- NEXORA Brand Logo - Clean Vector Design -->
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#7c3aed" flood-opacity="0.4" result="glowColor"/>
+      <feComposite in="glowColor" in2="blur" operator="in" result="glow"/>
+      <feComposite in="SourceGraphic" in2="glow" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Outer glow ring -->
+  <circle cx="64" cy="64" r="58" fill="url(#bgGradient)" opacity="0.15"/>
+  <circle cx="64" cy="64" r="54" fill="none" stroke="url(#bgGradient)" stroke-width="2" opacity="0.3"/>
+
+  <!-- Main background -->
+  <circle cx="64" cy="64" r="50" fill="url(#bgGradient)" filter="url(#glow)"/>
+
+  <!-- Geometric "N" monogram -->
+  <g fill="url(#textGradient)">
+    <!-- Left vertical bar of N -->
+    <path d="M 38 68 L 38 42 L 44 42 L 44 68 Z" />
+    
+    <!-- Diagonal bar of N -->
+    <path d="M 44 68 L 44 62 L 82 34 L 82 40 L 48 68 Z" />
+    
+    <!-- Right vertical bar of N -->
+    <path d="M 82 40 L 82 68 L 88 68 L 88 40 Z" />
+  </g>
+
+  <!-- Sparkle/star accent -->
+  <g fill="#ffffff" opacity="0.9">
+    <path d="M 90 28 L 91 32 L 95 32 L 92 34 L 93 38 L 91 35 L 89 38 L 90 34 L 87 32 L 91 32 Z" transform="rotate(-15 90 33)"/>
+    <path d="M 30 30 L 31 33 L 34 33 L 32 35 L 33 38 L 31 36 L 29 38 L 30 35 L 27 33 L 30 33 Z" transform="rotate(10 30 33)"/>
+  </g>
+</svg>

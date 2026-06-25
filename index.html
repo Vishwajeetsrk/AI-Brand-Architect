@@ -6,13 +6,38 @@
     <title>NEXORA - AI Brand Architect</title>
     <meta name="description" content="NEXORA - Intelligent Brand Building Powered by AI. Build, manage, and scale your brand with AI-powered tools." />
     <meta name="theme-color" content="#7c3aed" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/NEXORA Logo.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/NEXORA Logo.png" />
-    <link rel="apple-touch-icon" href="/NEXORA Logo.png" />
+    
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
     <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" as="image" type="image/svg+xml" href="/logo.svg" />
+    <link rel="preload" as="image" type="image/svg+xml" href="/logo-horizontal.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="NEXORA - AI Brand Architect" />
+    <meta property="og:description" content="Intelligent Brand Building Powered by AI" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/logo.svg" />
+    <meta property="og:image:width" content="128" />
+    <meta property="og:image:height" content="128" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="NEXORA - AI Brand Architect" />
+    <meta name="twitter:description" content="Intelligent Brand Building Powered by AI" />
+    <meta name="twitter:image" content="/logo.svg" />
+    
     <style>
       html, body { height: 100%; margin: 0; }
       #root { height: 100%; }
+      /* Prevent flash of unstyled content */
+      body { background: #07091c; }
     </style>
   </head>
   <body>
