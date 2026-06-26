@@ -11,6 +11,13 @@ import { ApiKeysModule } from './modules/api-keys/api-keys.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { KnowledgeModule } from './modules/knowledge/knowledge.module';
 import { CommerceModule } from './modules/commerce/commerce.module';
+import { SecurityModule } from './modules/security/security.module';
+import { CollaborationModule } from './modules/collaboration/collaboration.module';
+import { MarketplaceModule } from './modules/marketplace/marketplace.module';
+import { AutomationModule } from './modules/automation/automation.module';
+import { CrmModule } from './modules/crm/crm.module';
+import { CreatorModule } from './modules/creator/creator.module';
+import { LmsModule } from './modules/lms/lms.module';
 
 @Module({
   imports: [
@@ -26,6 +33,13 @@ import { CommerceModule } from './modules/commerce/commerce.module';
     AnalyticsModule,
     KnowledgeModule,
     CommerceModule,
+    CollaborationModule,
+    MarketplaceModule,
+    AutomationModule,
+    CrmModule,
+    SecurityModule,
+    CreatorModule,
+    LmsModule,
   ],
 })
 export class AppModule {}

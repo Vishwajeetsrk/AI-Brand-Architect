@@ -19,10 +19,16 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@nexora/analytics": ["../../packages/analytics/src"],
+      "@nexora/automation": ["../../packages/automation/src"],
       "@nexora/commerce": ["../../packages/commerce/src"],
       "@nexora/database": ["../../packages/database/src"],
       "@nexora/knowledge": ["../../packages/knowledge/src"],
-      "@nexora/shared": ["../../packages/shared/src"]
+      "@nexora/shared": ["../../packages/shared/src"],
+      "@nexora/collaboration": ["../../packages/collaboration/src"],
+      "@nexora/security": ["../../packages/security/src"],
+      "@nexora/marketplace": ["../../packages/marketplace/src"],
+      "@nexora/creator": ["../../packages/creator/src"],
+      "@nexora/lms": ["../../packages/lms/src"]
     }
   },
   "include": ["src/**/*"]

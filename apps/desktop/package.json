@@ -1,0 +1,29 @@
+{
+  "name": "@nexora/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "electron .",
+    "build": "electron-builder",
+    "dist": "electron-builder --win --mac --linux"
+  },
+  "dependencies": {
+    "electron-store": "^10.0.0",
+    "electron-updater": "^6.3.0"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.nexora.app",
+    "productName": "NEXORA",
+    "directories": { "output": "dist" },
+    "files": ["electron/**/*", "../web/dist/**/*"],
+    "win": { "target": "nsis", "icon": "../web/public/logo.svg" },
+    "mac": { "target": "dmg", "icon": "../web/public/logo.svg" },
+    "linux": { "target": "AppImage", "icon": "../web/public/logo.svg" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+  }
+}

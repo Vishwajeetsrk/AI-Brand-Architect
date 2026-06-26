@@ -7,7 +7,12 @@ export type Screen =
   | "ai-agents" | "workflow" | "export" | "team" | "activity"
   | "analytics" | "integrations" | "settings" | "billing" | "api-keys"
   | "notifications" | "profile" | "help" | "docs" | "changelog"
-  | "mcp-tools" | "knowledge-hub" | "cms-dashboard" | "mission-control"
+  | "mcp-tools" | "knowledge-hub" | "cms-dashboard" | "mission-control" | "marketplace" | "security"
+  | "collaboration"
+  | "automation"
+  | "lms"
+  | "crm"
+  | "creator"
   | "terms" | "privacy" | "cookie" | "license" | "404" | "maintenance";
 
 export interface NavItem { id: Screen; label: string; icon: React.ElementType; badge?: string }

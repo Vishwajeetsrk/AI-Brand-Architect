@@ -48,6 +48,13 @@ const WebsiteBuilderPage = lazy(() => import("./screens/WebsiteBuilderPage"));
 const UIUXPage = lazy(() => import("./screens/UIUXPage"));
 const PresentationPage = lazy(() => import("./screens/PresentationPage"));
 const FormBuilderPage = lazy(() => import("./screens/FormBuilderPage"));
+const AutomationPage = lazy(() => import("./screens/AutomationPage"));
+const MarketplacePage = lazy(() => import("./screens/MarketplacePage"));
+const SecurityPage = lazy(() => import("./screens/SecurityPage"));
+const CollaborationPage = lazy(() => import("./screens/CollaborationPage"));
+const LearningPage = lazy(() => import("./screens/LearningPage"));
+const CRMPage = lazy(() => import("./screens/CRMPage"));
+const CreatorPage = lazy(() => import("./screens/CreatorPage"));
 
 function Loader() {
   return (
@@ -113,6 +120,13 @@ export default function App() {
       case "uiux": return <UIUXPage />;
       case "presentation": return <PresentationPage />;
       case "form-builder": return <FormBuilderPage />;
+      case "automation": return <AutomationPage />;
+      case "marketplace": return <MarketplacePage />;
+      case "security": return <SecurityPage />;
+      case "collaboration": return <CollaborationPage />;
+      case "lms": return <LearningPage />;
+      case "crm": return <CRMPage />;
+      case "creator": return <CreatorPage />;
       case "terms": return <LegalPage title="Terms of Service" navigate={navigate} content={["Acceptance of Terms", "Use License", "Disclaimer", "Limitations", "Privacy Policy", "Governing Law", "Changes to Terms"]} />;
       case "privacy": return <LegalPage title="Privacy Policy" navigate={navigate} content={["Information We Collect", "How We Use Information", "Information Sharing", "Data Security", "Cookie Policy", "Your Rights", "Contact Us"]} />;
       case "cookie": return <LegalPage title="Cookie Policy" navigate={navigate} content={["What Are Cookies", "How We Use Cookies", "Types of Cookies", "Managing Cookies", "Third-Party Cookies", "Policy Updates"]} />;

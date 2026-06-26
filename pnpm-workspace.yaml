@@ -7,5 +7,6 @@ allowBuilds:
   '@scarf/scarf': true
   '@tailwindcss/oxide': true
   bcrypt: true
+  electron: true
   esbuild: true
   prisma: true

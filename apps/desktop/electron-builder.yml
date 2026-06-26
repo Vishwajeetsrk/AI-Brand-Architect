@@ -1,0 +1,21 @@
+appId: com.nexora.app
+productName: NEXORA
+directories:
+  output: release
+  buildResources: ../web/public
+files:
+  - electron/**/*
+  - ../web/dist/**/*
+win:
+  target: nsis
+  icon: ../web/public/logo.svg
+mac:
+  target: dmg
+  icon: ../web/public/logo.svg
+linux:
+  target: AppImage
+  icon: ../web/public/logo.svg
+nsis:
+  oneClick: false
+  perMachine: true
+  allowToChangeInstallationDirectory: true
