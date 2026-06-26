@@ -5,5 +5,11 @@
   "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
-  "dependencies": { "@nexora/shared": "workspace:*" }
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": { "@nexora/shared": "workspace:*" },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
 }
