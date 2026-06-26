@@ -1,97 +1,54 @@
 # NEXORA — AI Brand Architect
 
-> **Phase:** UI Prototype (Frontend Demo) — Planning for Full-Stack Production
+> **Phase:** pnpm Monorepo — Frontend (Vite React) + Backend (NestJS) + Shared Packages
 >
 > Part of the **Learnify AI** ecosystem (see PLAN/ for complete 12-book specification)
 
-## Current Status
+## Project Structure (Monorepo)
 
-✅ **Built (Frontend Prototype):**
-- 45+ lazy-loaded screens (auth, dashboard, brand studio, AI tools, analytics, settings, etc.)
-- Code-split via `React.lazy()` + `Suspense` — main entry ~24 kB, vendors separated
-- Dark theme (`bg-[#07081a]`), shadcn/ui component system, Radix UI primitives
-- Shared component library (Btn, Card, Badge, Input, StatCard, Avatar, Toggle, PageHeader, EmptyPlaceholder)
-- Layout system (Sidebar, TopBar, AppLayout, navConfig)
-- Route definitions for all 45 screens in `App.tsx`
-- Build passes cleanly (2679 modules, ~9s build time)
-
-⚠️ **Pending (Production Layers — see PLAN Books 11 & 12):**
-
-| Layer | Status | Reference Plan Volume |
-|-------|--------|----------------------|
-| UI Prototype (screens, routing, components) | ✅ 100% | V101 |
-| Design System (design tokens, theme, responsive) | ✅ 80% | V123 |
-| **Database** (PostgreSQL, Prisma, Redis, Vector DB, 600+ tables) | ❌ Not started | V102, V125 |
-| **Authentication** (Better Auth, OAuth 2.1, Passkeys, MFA, RBAC, SSO) | ❌ Not started | V126 |
-| **Backend API** (REST, GraphQL, WebSockets, MCP, 5000+ endpoints) | ❌ Not started | V103, V124 |
-| **Backend Services** (NestJS microservices, business logic, workflows) | ❌ Not started | V105 |
-| **AI Engine** (LLM Gateway, multi-provider, RAG, prompt engine, memory) | ❌ Not started | V106, V127 |
-| **Multi-Agent Runtime** (AgentOS, brand agents, planning, collaboration) | ❌ Not started | V128 |
-| **Analytics Platform** (BI, real-time dashboards, data warehouse) | ❌ Not started | V110 |
-| **Knowledge Platform** (wiki, docs, semantic search, digital brain) | ❌ Not started | V109 |
-| **Commerce/Billing** (subscriptions, payments, marketplace) | ❌ Not started | V117 |
-| **DevSecOps** (CI/CD, Kubernetes, platform engineering) | ❌ Not started | V111 |
-| **Security** (zero trust, IAM, AI security, privacy) | ❌ Not started | V112 |
-| **Automation** (workflow engine, BPM, no-code builder) | ❌ Not started | V108 |
-| **CRM & Marketing** (sales automation, support, growth) | ❌ Not started | V119 |
-| **Desktop** (Electron, Windows, macOS, Linux) | ❌ Not started | V114 |
-| **Mobile** (Android, iOS, offline, push notifications) | ❌ Not started | V113 (Book 11) |
-| **Enterprise** (orgs, teams, audit, compliance) | ❌ Not started | V118, V119, V120 |
+```
+NEXORA/
+├── apps/
+│   ├── web/                     # Vite React frontend (existing UI prototype)
+│   │   ├── src/                 # App source (App.tsx, main.tsx, screens/, components/, etc.)
+│   │   ├── public/              # Static assets
+│   │   ├── index.html
+│   │   └── vite.config.ts
+│   └── server/                  # NestJS backend (in progress)
+│       └── src/
+├── packages/
+│   ├── shared/                  # Shared TypeScript types, constants, utils
+│   │   └── src/
+│   │       ├── index.ts
+│   │       └── types.ts         # User, Brand, Project, Asset, AI interfaces
+│   └── database/                # Prisma schema + client
+│       └── src/
+├── package.json                 # Workspace root
+├── pnpm-workspace.yaml
+└── tsconfig.json                # Root TS config
+```
 
 ## Quick Start
 
 ```bash
-npm install
-npm run dev      # Vite dev server
-npm run build    # Production build
+pnpm install
+pnpm dev           # Start all packages in parallel
+pnpm dev:web       # Vite dev server only
+pnpm dev:server    # NestJS dev server only
+pnpm build         # Build all packages
 ```
 
-## Tech Stack (Current)
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | React 18 |
-| Build | Vite 6 |
-| Language | TypeScript 5 |
-| Styling | Tailwind CSS 4 |
-| UI Library | shadcn/ui (Radix UI primitives) |
-| Animation | Motion (Framer Motion) |
+| Frontend | React 18, Vite 6, TypeScript 5 |
+| Styling | Tailwind CSS 4, shadcn/ui |
+| Backend | NestJS 11 (in progress) |
+| Database | PostgreSQL + Prisma (in progress) |
 | Charts | Recharts |
-| Icons | Lucide React |
+| Icons | Lucide React, MUI Icons v7 |
 | Routing | React Router 7 |
-| Icons (MUI) | MUI Icons v7 |
-
-## Project Structure
-
-```
-NEXORA/
-├── src/
-│   ├── App.tsx                  # Root with React.lazy routes (45 screens)
-│   ├── main.tsx                 # Entry point
-│   ├── types.ts                 # Screen/NavItem type definitions
-│   ├── components/
-│   │   └── shared/              # 9 shared components (Btn, Card, etc.)
-│   ├── layout/                  # Sidebar, TopBar, AppLayout, navConfig
-│   ├── screens/                 # 45 screen components (all default exports)
-│   │   ├── DashboardPage.tsx
-│   │   ├── BrandStudioPage.tsx
-│   │   ├── AIAgentsPage.tsx
-│   │   └── ... (42 more)
-│   └── styles/                  # Theme, fonts, gradients
-├── dist/                        # Build output
-└── PLAN/                        # Complete 12-book specification (parent dir)
-```
-
-## Screens (45 total)
-
-- **Auth:** SignIn, SignUp, Forgot, Verify, Onboarding
-- **Dashboard:** Dashboard, Analytics, MissionControl, Notifications, Activity
-- **Brand:** BrandStudio, BrandGuidelines, LogoMaker, Templates
-- **AI Tools:** AIAgents, AIImage, WebsiteBuilder, EmailBuilder, SocialMedia, Marketing, UIUX, Presentation, FormBuilder, Workflow
-- **Content:** CMSDashboard, KnowledgeHub, Assets, Docs
-- **Commerce:** Billing, Team, Integrations, APIKeys
-- **Utility:** Settings, Profile, Projects, Export, Help, Changelog, Legal, NotFound, Maintenance
-- **Landing:** LandingPage, GenericToolPage, AuthCard, MCPToolsPage
 
 ## PLAN Specification (12 Books)
 

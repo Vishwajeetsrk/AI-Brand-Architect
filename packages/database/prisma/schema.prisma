@@ -1,0 +1,547 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  extensions = [pgvector, citext]
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  VIEWER
+}
+
+enum PlanType {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum OrganizationMemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum BrandVoice {
+  PROFESSIONAL
+  PLAYFUL
+  LUXURY
+  EDGY
+  WARM
+}
+
+enum ProjectStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum AssetType {
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+  THREE_D
+  OTHER
+}
+
+enum AIProvider {
+  OPENAI
+  ANTHROPIC
+  GOOGLE
+  DEEPSEEK
+  MISTRAL
+  CUSTOM
+}
+
+enum AgentType {
+  BRAND
+  MARKETING
+  DESIGN
+  CONTENT
+  RESEARCH
+  SOCIAL
+  CUSTOM
+}
+
+enum AgentMemoryType {
+  SHORT_TERM
+  LONG_TERM
+  SEMANTIC
+  EPISODIC
+}
+
+enum GenerationType {
+  LOGO
+  WEBSITE
+  EMAIL
+  SOCIAL
+  MARKETING
+  UIUX
+  PRESENTATION
+  FORM
+  CONTENT
+  OTHER
+}
+
+enum KnowledgeBaseType {
+  DOCUMENT
+  WEB
+  API
+  MANUAL
+}
+
+enum WorkflowStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum WorkflowExecutionStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  PAUSED
+}
+
+model User {
+  id           String   @id @default(uuid()) @map("id")
+  email        String   @unique @map("email")
+  name         String   @map("name")
+  passwordHash String   @map("password_hash")
+  avatar       String?  @map("avatar")
+  role         UserRole @default(USER) @map("role")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  sessions           Session[]
+  organizationMember OrganizationMember[]
+  brands             Brand[]
+  projects           Project[]
+  assets             Asset[]
+  aiModels           AIModel[]
+  agents             Agent[]
+  prompts            Prompt[]
+  promptVersions     PromptVersion[]
+  generations        Generation[]
+  knowledgeBases     KnowledgeBase[]
+  workflows          Workflow[]
+  workflowExecutions WorkflowExecution[]
+  apiKeys            ApiKey[]
+  auditLogs          AuditLog[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @map("id")
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model Organization {
+  id        String   @id @default(uuid()) @map("id")
+  name      String   @map("name")
+  slug      String   @unique @map("slug")
+  logo      String?  @map("logo")
+  plan      PlanType @default(FREE) @map("plan")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  members  OrganizationMember[]
+  brands   Brand[]
+  projects Project[]
+  assets   Asset[]
+  agents   Agent[]
+  prompts  Prompt[]
+  generations Generation[]
+  knowledgeBases KnowledgeBase[]
+  workflows Workflow[]
+  apiKeys  ApiKey[]
+  auditLogs AuditLog[]
+
+  @@index([slug])
+  @@index([plan])
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String                   @id @default(uuid()) @map("id")
+  organizationId String                   @map("organization_id")
+  userId         String                   @map("user_id")
+  role           OrganizationMemberRole   @default(MEMBER) @map("role")
+  createdAt      DateTime                 @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+  @@index([role])
+  @@map("organization_members")
+}
+
+model Brand {
+  id             String     @id @default(uuid()) @map("id")
+  name           String     @map("name")
+  description    String?    @map("description")
+  industry       String?    @map("industry")
+  logo           String?    @map("logo")
+  tagline        String?    @map("tagline")
+  voice          BrandVoice @default(PROFESSIONAL) @map("voice")
+  targetAudience String?    @map("target_audience")
+  userId         String     @map("user_id")
+  organizationId String?    @map("organization_id")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  identity     BrandIdentity?
+  projects     Project[]
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([voice])
+  @@index([industry])
+  @@map("brands")
+}
+
+model BrandIdentity {
+  id              String @id @default(uuid()) @map("id")
+  brandId         String @unique @map("brand_id")
+  primaryColor    String @map("primary_color")
+  secondaryColor  String @map("secondary_color")
+  accentColor     String @map("accent_color")
+  backgroundColor String @map("background_color")
+  textColor       String @map("text_color")
+  headingFont     String @map("heading_font")
+  bodyFont        String @map("body_font")
+  baseFontSize    String @default("16px") @map("base_font_size")
+  logoUrl         String? @map("logo_url")
+  faviconUrl      String? @map("favicon_url")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  brand Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@map("brand_identities")
+}
+
+model Project {
+  id             String        @id @default(uuid()) @map("id")
+  name           String        @map("name")
+  description    String?       @map("description")
+  status         ProjectStatus @default(DRAFT) @map("status")
+  brandId        String        @map("brand_id")
+  userId         String        @map("user_id")
+  organizationId String?       @map("organization_id")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  brand        Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  assets       Asset[]
+  generations  Generation[]
+
+  @@index([brandId])
+  @@index([userId])
+  @@index([organizationId])
+  @@index([status])
+  @@map("projects")
+}
+
+model Asset {
+  id             String    @id @default(uuid()) @map("id")
+  name           String    @map("name")
+  type           AssetType @map("type")
+  url            String    @map("url")
+  size           Int?      @map("size")
+  mimeType       String?   @map("mime_type")
+  width          Int?      @map("width")
+  height         Int?      @map("height")
+  projectId      String?   @map("project_id")
+  userId         String    @map("user_id")
+  organizationId String?   @map("organization_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  project      Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([organizationId])
+  @@index([type])
+  @@map("assets")
+}
+
+model AIModel {
+  id        String    @id @default(uuid()) @map("id")
+  provider  AIProvider @map("provider")
+  modelName String    @map("model_name")
+  apiKey    String    @map("api_key")
+  config    Json?     @map("config")
+  isActive  Boolean   @default(true) @map("is_active")
+  userId    String    @map("user_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agents Agent[]
+
+  @@index([userId])
+  @@index([provider])
+  @@index([isActive])
+  @@map("ai_models")
+}
+
+model Agent {
+  id             String    @id @default(uuid()) @map("id")
+  name           String    @map("name")
+  description    String?   @map("description")
+  type           AgentType @map("type")
+  config         Json?     @map("config")
+  skills         String[]  @map("skills")
+  userId         String    @map("user_id")
+  modelId        String?   @map("model_id")
+  organizationId String?   @map("organization_id")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  model        AIModel?     @relation(fields: [modelId], references: [id], onDelete: SetNull)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  memories     AgentMemory[]
+
+  @@index([userId])
+  @@index([modelId])
+  @@index([organizationId])
+  @@index([type])
+  @@map("agents")
+}
+
+model AgentMemory {
+  id        String          @id @default(uuid()) @map("id")
+  agentId   String          @map("agent_id")
+  type      AgentMemoryType @map("type")
+  content   String          @map("content")
+  metadata  Json?           @map("metadata")
+  embedding Unsupported("vector(1536)")? @map("embedding")
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([agentId])
+  @@index([type])
+  @@map("agent_memories")
+}
+
+model Prompt {
+  id             String   @id @default(uuid()) @map("id")
+  title          String   @map("title")
+  content        String   @map("content")
+  systemPrompt   String?  @map("system_prompt")
+  model          String?  @map("model")
+  temperature    Float?   @map("temperature")
+  maxTokens      Int?     @map("max_tokens")
+  tags           String[] @map("tags")
+  isTemplate     Boolean  @default(false) @map("is_template")
+  userId         String   @map("user_id")
+  organizationId String?  @map("organization_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization?   @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  versions     PromptVersion[]
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([isTemplate])
+  @@map("prompts")
+}
+
+model PromptVersion {
+  id          String   @id @default(uuid()) @map("id")
+  promptId    String   @map("prompt_id")
+  content     String   @map("content")
+  systemPrompt String? @map("system_prompt")
+  version     Int      @map("version")
+  changelog   String?  @map("changelog")
+  userId      String   @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, version])
+  @@index([promptId])
+  @@index([userId])
+  @@map("prompt_versions")
+}
+
+model Generation {
+  id             String         @id @default(uuid()) @map("id")
+  type           GenerationType @map("type")
+  prompt         String         @map("prompt")
+  result         Json           @map("result")
+  provider       String         @map("provider")
+  model          String         @map("model")
+  tokensUsed     Int?           @map("tokens_used")
+  cost           Float?         @map("cost")
+  metadata       Json?          @map("metadata")
+  userId         String         @map("user_id")
+  projectId      String?        @map("project_id")
+  organizationId String?        @map("organization_id")
+  createdAt      DateTime       @default(now()) @map("created_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project      Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([organizationId])
+  @@index([type])
+  @@index([createdAt])
+  @@map("generations")
+}
+
+model KnowledgeBase {
+  id             String           @id @default(uuid()) @map("id")
+  name           String           @map("name")
+  description    String?          @map("description")
+  type           KnowledgeBaseType @map("type")
+  config         Json?            @map("config")
+  userId         String           @map("user_id")
+  organizationId String?          @map("organization_id")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization?       @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  documents    KnowledgeDocument[]
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([type])
+  @@map("knowledge_bases")
+}
+
+model KnowledgeDocument {
+  id             String   @id @default(uuid()) @map("id")
+  knowledgeBaseId String  @map("knowledge_base_id")
+  title          String   @map("title")
+  content        String?  @map("content")
+  source         String?  @map("source")
+  embedding      Unsupported("vector(1536)")? @map("embedding")
+  metadata       Json?    @map("metadata")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  knowledgeBase KnowledgeBase @relation(fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
+
+  @@index([knowledgeBaseId])
+  @@map("knowledge_documents")
+}
+
+model Workflow {
+  id             String         @id @default(uuid()) @map("id")
+  name           String         @map("name")
+  description    String?        @map("description")
+  steps          Json           @map("steps")
+  config         Json?          @map("config")
+  status         WorkflowStatus @default(DRAFT) @map("status")
+  userId         String         @map("user_id")
+  organizationId String?        @map("organization_id")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization?       @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  executions   WorkflowExecution[]
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([status])
+  @@map("workflows")
+}
+
+model WorkflowExecution {
+  id         String                   @id @default(uuid()) @map("id")
+  workflowId String                   @map("workflow_id")
+  status     WorkflowExecutionStatus  @default(RUNNING) @map("status")
+  input      Json?                    @map("input")
+  output     Json?                    @map("output")
+  error      String?                  @map("error")
+  startedAt  DateTime                 @default(now()) @map("started_at")
+  completedAt DateTime?               @map("completed_at")
+  userId     String                   @map("user_id")
+
+  workflow Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([workflowId])
+  @@index([userId])
+  @@index([status])
+  @@map("workflow_executions")
+}
+
+model ApiKey {
+  id             String   @id @default(uuid()) @map("id")
+  name           String   @map("name")
+  key            String   @unique @map("key")
+  scopes         String[] @map("scopes")
+  lastUsedAt     DateTime? @map("last_used_at")
+  expiresAt      DateTime? @map("expires_at")
+  userId         String   @map("user_id")
+  organizationId String?  @map("organization_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([key])
+  @@index([userId])
+  @@index([organizationId])
+  @@map("api_keys")
+}
+
+model AuditLog {
+  id             String   @id @default(uuid()) @map("id")
+  action         String   @map("action")
+  entity         String   @map("entity")
+  entityId       String   @map("entity_id")
+  changes        Json?    @map("changes")
+  userId         String   @map("user_id")
+  organizationId String?  @map("organization_id")
+  ipAddress      String?  @map("ip_address")
+  userAgent      String?  @map("user_agent")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([entity, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

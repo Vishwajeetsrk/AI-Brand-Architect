@@ -27,6 +27,23 @@ design-system/assets/gradients/
 design-system/assets/patterns/
 src/imports/
 
+# Build outputs
+build/
+.next/
+
+# Uploads
+uploads/
+!uploads/.gitkeep
+
+# Prisma
+packages/database/prisma/migrations/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
 # OS files
 Thumbs.db
 ehthumbs.db

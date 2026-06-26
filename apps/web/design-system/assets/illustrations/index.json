@@ -1,0 +1,38 @@
+{
+    "assets":  [
+                   {
+                       "extension":  ".svg",
+                       "name":  "illustration-abstract-pattern-large.svg",
+                       "size":  41057
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "illustration-ai-bot-small.svg",
+                       "size":  1667
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "illustration-ai-character-large.svg",
+                       "size":  82355
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "illustration-ai-character-medium.svg",
+                       "size":  8849
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "illustration-ai-face-abstract.svg",
+                       "size":  2983
+                   },
+                   {
+                       "extension":  ".svg",
+                       "name":  "illustration-complex-pattern-large.svg",
+                       "size":  283546
+                   }
+               ],
+    "category":  "illustrations",
+    "lastUpdated":  "2026-06-25",
+    "count":  6,
+    "brand":  "AI Brand Architect"
+}
