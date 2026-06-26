@@ -15,7 +15,7 @@ export function TopBar({ navigate, collapsed, setCollapsed, current }: {
         <Menu size={18} />
       </button>
       <div className="flex items-center gap-1.5 text-sm text-slate-500">
-        <Home size={13} />
+        <button onClick={() => navigate("dashboard")} className="hover:text-white transition-colors"><Home size={13} /></button>
         <ChevronRight size={12} />
         <span className="text-white font-medium">{currentLabel}</span>
       </div>

@@ -49,8 +49,8 @@ export default function LandingPage({ navigate }: { navigate: (s: Screen) => voi
             <img src="/logo-horizontal.svg" alt="NEXORA" className="h-12 w-auto" />
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm text-slate-400">
-            {["Product", "Templates", "Pricing", "Company"].map((n) => (
-              <a key={n} className="hover:text-white transition-colors cursor-pointer">{n}</a>
+            {[{ label: "Product", screen: "brand-studio" as Screen }, { label: "Templates", screen: "templates" as Screen }, { label: "Pricing", screen: "signup" as Screen }, { label: "Company", screen: "help" as Screen }].map((n) => (
+              <button key={n.label} onClick={() => navigate(n.screen)} className="hover:text-white transition-colors cursor-pointer">{n.label}</button>
             ))}
           </nav>
           <div className="flex items-center gap-3">

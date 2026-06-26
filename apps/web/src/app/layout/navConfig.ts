@@ -4,7 +4,7 @@ import {
   Copy, Layers, Palette, Bot, GitBranch, Upload, Users, Activity,
   BarChart3, Settings, CreditCard, Key, Bell, User, HelpCircle,
   BookOpen, Clock, Terminal, FileText, Gauge, Plug, Shield, ShoppingCart,
-  GraduationCap,
+  GraduationCap, Crown, Contact, MessageSquare, Zap,
 } from "lucide-react";
 import type { NavItem, NavSection, Screen } from "../types";
 
@@ -49,6 +49,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { id: "mcp-tools", label: "MCP Tools", icon: Terminal },
       { id: "cms-dashboard", label: "CMS Dashboard", icon: FileText },
       { id: "workflow", label: "Workflow Builder", icon: GitBranch },
+      { id: "automation", label: "Automation", icon: Zap, badge: "New" },
       { id: "export", label: "Export Center", icon: Upload },
       { id: "marketplace", label: "Agent Marketplace", icon: ShoppingCart, badge: "New" },
       { id: "creator", label: "Creator Studio", icon: Crown, badge: "New" },

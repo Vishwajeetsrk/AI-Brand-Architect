@@ -10,7 +10,8 @@ export function Sidebar({ current, navigate, collapsed, setCollapsed }: {
   collapsed: boolean; setCollapsed: (v: boolean) => void;
 }) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
-    Overview: true, "AI Studio": true, Library: false, Workflow: false, Team: false, Insights: false,
+    Overview: true, "AI Studio": true, Library: false, Workflow: false,
+    CRM: false, Team: false, Insights: false, Security: false,
   });
 
   return (
