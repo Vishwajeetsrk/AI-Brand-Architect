@@ -1,68 +1,83 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { KnowledgeBase, knowledgeBase, KnowledgeArticle } from '@nexora/knowledge';
+import { prisma, KnowledgeDocument, KnowledgeBase } from '@nexora/database';
 
 @Injectable()
 export class KnowledgeService {
-  private kb: KnowledgeBase;
-
-  constructor() {
-    this.kb = knowledgeBase;
-    this.seedData();
+  async getCategories(): Promise<KnowledgeBase[]> {
+    return prisma.knowledgeBase.findMany();
   }
 
-  private seedData() {
-    const articles = [
-      {
-        title: 'Building a Strong Brand Identity',
-        content: 'A comprehensive guide to creating a memorable brand identity that resonates with your target audience...',
-        summary: 'Learn the fundamentals of brand identity design and strategy.',
-        category: 'cat-1', tags: ['branding', 'identity', 'strategy'],
-        authorId: 'system', status: 'published' as const, updatedAt: new Date().toISOString(),
-      },
-      {
-        title: 'Color Psychology in Branding',
-        content: 'Understanding how colors influence perception and decision-making in brand design...',
-        summary: 'Deep dive into color theory and its application in brand design.',
-        category: 'cat-2', tags: ['design', 'colors', 'psychology'],
-        authorId: 'system', status: 'published' as const, updatedAt: new Date().toISOString(),
-      },
-      {
-        title: 'Social Media Branding Guide',
-        content: 'How to maintain consistent brand presence across all social media platforms...',
-        summary: 'Best practices for cohesive social media branding.',
-        category: 'cat-3', tags: ['social-media', 'marketing', 'branding'],
-        authorId: 'system', status: 'published' as const, updatedAt: new Date().toISOString(),
-      },
-    ];
-    articles.forEach(a => this.kb.createArticle(a));
+  async getArticles(knowledgeBaseId?: string): Promise<KnowledgeDocument[]> {
+    const where = knowledgeBaseId ? { knowledgeBaseId } : {};
+    return prisma.knowledgeDocument.findMany({ where });
   }
 
-  getCategories() { return this.kb.getCategories(); }
-
-  getArticles(categoryId?: string) { return this.kb.getArticles(categoryId); }
-
-  getArticle(id: string) {
-    const article = this.kb.getArticle(id);
+  async getArticle(id: string): Promise<KnowledgeDocument | null> {
+    const article = await prisma.knowledgeDocument.findUnique({ where: { id } });
     if (!article) throw new NotFoundException('Article not found');
     return article;
   }
 
-  createArticle(data: Partial<KnowledgeArticle> & { title: string; content: string }) {
-    return this.kb.createArticle({
-      title: data.title,
-      content: data.content,
-      summary: data.summary || data.content.slice(0, 200),
-      category: data.category || 'cat-1',
-      tags: data.tags || [],
-      authorId: data.authorId || 'system',
-      status: data.status || 'draft',
-      updatedAt: new Date().toISOString(),
+  async createArticle(data: any): Promise<KnowledgeDocument> {
+    const baseId = data.category || 'default';
+    await prisma.knowledgeBase.upsert({
+      where: { id: baseId },
+      update: {},
+      create: { id: baseId, name: data.category || 'General', type: 'DOCUMENT', userId: data.authorId || 'system' },
+    });
+    return prisma.knowledgeDocument.create({
+      data: {
+        title: data.title,
+        content: data.content,
+        knowledgeBaseId: baseId,
+        source: data.source,
+        metadata: {
+          summary: data.summary || data.content?.slice(0, 200),
+          tags: data.tags || [],
+          authorId: data.authorId || 'system',
+          status: data.status || 'draft',
+        },
+      },
     });
   }
 
-  updateArticle(id: string, data: Partial<KnowledgeArticle>) { return this.kb.updateArticle(id, data); }
+  async updateArticle(id: string, data: any): Promise<KnowledgeDocument> {
+    const existing = await prisma.knowledgeDocument.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException('Article not found');
+    const meta = (existing.metadata as Record<string, any>) || {};
+    return prisma.knowledgeDocument.update({
+      where: { id },
+      data: {
+        title: data.title,
+        content: data.content,
+        source: data.source,
+        metadata: {
+          ...meta,
+          ...(data.metadata || {}),
+          summary: data.summary ?? meta.summary,
+          tags: data.tags ?? meta.tags,
+          authorId: data.authorId ?? meta.authorId,
+          status: data.status ?? meta.status,
+        },
+      },
+    });
+  }
 
-  deleteArticle(id: string) { return this.kb.deleteArticle(id); }
+  async deleteArticle(id: string): Promise<{ deleted: boolean }> {
+    const existing = await prisma.knowledgeDocument.findUnique({ where: { id } });
+    if (!existing) throw new NotFoundException('Article not found');
+    await prisma.knowledgeDocument.delete({ where: { id } });
+    return { deleted: true };
+  }
 
-  search(query: string) { return this.kb.search(query); }
+  async search(query: string): Promise<KnowledgeDocument[]> {
+    return prisma.knowledgeDocument.findMany({
+      where: {
+        OR: [
+          { title: { contains: query, mode: 'insensitive' } },
+          { content: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+    });
+  }
 }

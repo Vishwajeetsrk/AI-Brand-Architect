@@ -35,7 +35,7 @@ export { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 export { Popover, PopoverContent, PopoverTrigger } from "./popover";
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
-export { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetOverlay, SheetPortal, SheetTitle, SheetTrigger } from "./sheet";
+export { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./sheet";
 
 // Data Display Components
 export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./table";

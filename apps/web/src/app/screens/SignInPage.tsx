@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import { Btn, Input } from "../components/shared";

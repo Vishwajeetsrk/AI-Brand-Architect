@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Terminal, Wifi, Plug, Activity } from "lucide-react";
 import { Btn, Card, Badge, StatCard, PageHeader } from "../components/shared";

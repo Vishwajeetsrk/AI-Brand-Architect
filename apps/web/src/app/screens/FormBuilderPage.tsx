@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Clipboard, Plus, Text, Mail, ListChecks, CheckSquare, Circle, Upload, FileText, Eye, BarChart3 } from "lucide-react";

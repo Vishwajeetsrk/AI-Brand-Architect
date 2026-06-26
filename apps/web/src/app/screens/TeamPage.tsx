@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Users, Activity, Mail, UserPlus, Edit2, Trash2 } from "lucide-react";
 import { Btn, Card, Badge, StatCard, PageHeader, Avatar } from "../components/shared";

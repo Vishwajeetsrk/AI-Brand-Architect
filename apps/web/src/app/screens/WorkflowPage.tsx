@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { GitBranch, Play, CheckCircle, Clock, Zap, Activity, Bot, GitMerge, Plug, Bell, Download, Webhook } from "lucide-react";
 import { Btn, Card, Badge, StatCard, PageHeader } from "../components/shared";

@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Clock } from "lucide-react";
 import { Card, Badge, PageHeader } from "../components/shared";

@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Bell, CheckCheck, Sparkles, UserPlus, Download, Globe, AlertCircle, MessageCircle, CreditCard, FileText } from "lucide-react";
 import { Btn, Card, PageHeader } from "../components/shared";

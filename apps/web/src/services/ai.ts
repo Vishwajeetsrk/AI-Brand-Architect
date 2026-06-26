@@ -38,7 +38,7 @@ export const aiService = {
   streamGenerate: (data: GenerateContentDto, onChunk: (text: string) => void) => {
     const token = localStorage.getItem('nexora_token');
     const eventSource = new EventSource(
-      `${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/ai/generate/stream?` +
+      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'}/ai/generate/stream?` +
       `prompt=${encodeURIComponent(data.prompt)}&type=${data.type}&token=${token}`
     );
     eventSource.onmessage = (event) => onChunk(event.data);

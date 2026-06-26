@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Palette, Type, Move, Eye } from "lucide-react";
 import { Card, Badge, PageHeader } from "../components/shared";

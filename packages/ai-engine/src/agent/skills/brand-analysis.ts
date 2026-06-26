@@ -14,8 +14,8 @@ export class BrandAnalysisSkill implements Skill {
     const targetAudience = (input.targetAudience as string) || 'General audience';
     const currentVoice = (input.currentVoice as string) || 'Neutral';
 
-    const archetype = await this.identifyArchetype(brandName, industry, description);
-    const brandVoice = await this.analyzeVoice(brandName, industry, description, currentVoice, targetAudience);
+    const archetype = await this.identifyArchetype(brandName, industry, description, context);
+    const brandVoice = await this.analyzeVoice(brandName, industry, description, currentVoice, targetAudience, context);
     const positioning = await this.analyzePositioning(brandName, industry, description, targetAudience);
     const colorRecommendations = this.generateColorRecommendations(archetype, industry);
 
@@ -35,7 +35,7 @@ export class BrandAnalysisSkill implements Skill {
     }
   }
 
-  private async identifyArchetype(brandName: string, industry: string, description: string): Promise<Record<string, unknown>> {
+  private async identifyArchetype(brandName: string, industry: string, description: string, context: AgentContext): Promise<Record<string, unknown>> {
     const archetypes = [
       { name: 'The Innocent', description: 'Pure, optimistic, simple', brands: 'Dove, Coca-Cola' },
       { name: 'The Everyman', description: 'Relatable, grounded, authentic', brands: 'IKEA, Levi\'s' },
@@ -53,7 +53,7 @@ export class BrandAnalysisSkill implements Skill {
 
     const archetypeDescriptions = archetypes.map(a => `- ${a.name}: ${a.description} (e.g., ${a.brands})`).join('\n');
 
-    const apiKey = (context.metadata?.apiKey as string) || process.env.OPENAI_API_KEY;
+    const apiKey = (context?.metadata?.apiKey as string) || process.env.OPENAI_API_KEY;
     if (apiKey) {
       try {
         const provider = getProvider('openai', apiKey);
@@ -115,8 +115,8 @@ export class BrandAnalysisSkill implements Skill {
     };
   }
 
-  private async analyzeVoice(brandName: string, industry: string, description: string, currentVoice: string, targetAudience: string): Promise<Record<string, unknown>> {
-    const apiKey = (context.metadata?.apiKey as string) || process.env.OPENAI_API_KEY;
+  private async analyzeVoice(brandName: string, industry: string, description: string, currentVoice: string, targetAudience: string, context: AgentContext): Promise<Record<string, unknown>> {
+    const apiKey = (context?.metadata?.apiKey as string) || process.env.OPENAI_API_KEY;
     if (apiKey) {
       try {
         const provider = getProvider('openai', apiKey);
@@ -143,7 +143,7 @@ export class BrandAnalysisSkill implements Skill {
 
     return {
       recommended: ['Confident', 'Innovative', 'Approachable', 'Professional', 'Authentic'],
-      details: `Recommended voice for ${brandName} in ${industry}: Confident yet approachable, innovative but trustworthy. Maintain professionalism while being accessible to ${targetAudience}.`,
+      details: `Recommended voice for ${brandName} in ${industry}: Confident yet approachable, innovative but trustworthy. Maintain professionalism while being accessible to ${targetAudience || 'your audience'}.`,
       currentVoice,
     };
   }
@@ -161,13 +161,13 @@ export class BrandAnalysisSkill implements Skill {
 
   private async analyzePositioning(brandName: string, industry: string, description: string, targetAudience: string): Promise<Record<string, unknown>> {
     return {
-      statement: `${brandName} is the leading ${industry} solution for ${targetAudience}, delivering ${description || 'exceptional value and innovation'}.`,
+      statement: `${brandName} is the leading ${industry} solution for ${targetAudience || 'modern brands'}, delivering ${description || 'exceptional value and innovation'}.`,
       differentiators: [
         'AI-powered brand intelligence',
         'Comprehensive brand analysis suite',
         'Data-driven creative direction',
       ],
-      marketPosition: `Premium ${industry} brand for ${targetAudience}`,
+      marketPosition: `Premium ${industry} brand for ${targetAudience || 'forward-thinking teams'}`,
     };
   }
 

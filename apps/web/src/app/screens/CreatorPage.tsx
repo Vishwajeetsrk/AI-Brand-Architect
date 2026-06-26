@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Edit2, Plus, Upload, Download, Eye, DollarSign, Users, BarChart3, TrendingUp, Star, Tag, Crown, Wallet, Calendar, Check, ChevronDown } from "lucide-react";

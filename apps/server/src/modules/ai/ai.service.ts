@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { prisma } from '@nexora/database';
 import { ProviderFactory } from './providers/provider-factory';
 import { GenerateOptions, StreamChunk } from './providers/llm-provider.interface';
 
@@ -8,7 +9,23 @@ export class AiService {
 
   async generateText(model: string, prompt: string, options?: GenerateOptions): Promise<string> {
     const provider = this.providerFactory.getProvider(model);
-    return provider.generateText(prompt, { ...options, model });
+    const result = await provider.generateText(prompt, { ...options, model });
+    const userId = (options as any)?.userId || 'system';
+    await prisma.prompt.create({
+      data: { title: prompt.slice(0, 100), content: prompt, systemPrompt: options?.systemPrompt, model, userId },
+    });
+    await prisma.generation.create({
+      data: {
+        type: 'CONTENT',
+        prompt,
+        result: { text: result },
+        provider: provider.constructor.name,
+        model,
+        tokensUsed: options?.maxTokens ?? null,
+        userId,
+      },
+    });
+    return result;
   }
 
   async generateStream(model: string, prompt: string, options?: GenerateOptions): Promise<AsyncGenerator<StreamChunk>> {

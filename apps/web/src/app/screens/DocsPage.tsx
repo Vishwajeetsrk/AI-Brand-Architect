@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { BookOpen, Terminal, Code2, Clock, Copy, Check, ChevronRight } from "lucide-react";

@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Card } from "../components/shared";
 import type { Screen } from "../types";

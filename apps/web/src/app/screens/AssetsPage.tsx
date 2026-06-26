@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Search, Upload, FolderOpen, Grid, List, Download, Eye, Play, ChevronLeft, ChevronRight } from "lucide-react";
@@ -118,9 +119,9 @@ export default function AssetsPage() {
           </div>
         </div>
       </div>
-      {(tab === "icons" || tab === "all") && typeof searched[0] === "string" && (
+      {(tab === "all" || tab === "icons") && (
         <div className={view === "grid" ? "grid grid-cols-8 sm:grid-cols-10 md:grid-cols-12 gap-2" : "space-y-1.5"}>
-          {(searched as string[]).map((n) => {
+          {(searched as any[]).filter((x): x is string => typeof x === "string").map((n) => {
             const kebab = n.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
             return view === "grid" ? (
               <div key={n} className="group cursor-pointer">
@@ -145,9 +146,9 @@ export default function AssetsPage() {
           })}
         </div>
       )}
-      {tab === "images" && (
+      {(tab === "all" || tab === "images") && (
         <div className={view === "grid" ? "grid grid-cols-4 gap-3" : "space-y-2"}>
-          {(searched as typeof imageAssets).filter((a: any) => a.img).map((a: any) => (
+          {(searched as any[]).filter((a: any) => a.img).map((a: any) => (
             view === "grid" ? (
               <Card key={a.name} className="group cursor-pointer overflow-hidden">
                 <div className="aspect-video bg-[#0c1022] flex items-center justify-center relative overflow-hidden">
@@ -175,9 +176,9 @@ export default function AssetsPage() {
           ))}
         </div>
       )}
-      {tab === "logos" && (
+      {(tab === "all" || tab === "logos") && (
         <div className={view === "grid" ? "grid grid-cols-4 gap-3" : "space-y-2"}>
-          {(searched as typeof logoAssets).map((a) => (
+          {(searched as any[]).filter((a: any) => a.file).map((a: any) => (
             view === "grid" ? (
               <Card key={a.name} className="group cursor-pointer overflow-hidden">
                 <div className="aspect-square bg-gradient-to-br from-violet-600/20 to-blue-600/10 flex items-center justify-center relative p-4">
@@ -204,9 +205,9 @@ export default function AssetsPage() {
           ))}
         </div>
       )}
-      {tab === "videos" && (
+      {(tab === "all" || tab === "videos") && (
         <div className="grid grid-cols-3 gap-3">
-          {(searched as typeof videoAssets).map((a) => (
+          {(searched as any[]).filter((a: any) => a.thumb).map((a: any) => (
             <Card key={a.name} className="group cursor-pointer overflow-hidden">
               <div className="aspect-video bg-[#0c1022] flex items-center justify-center relative overflow-hidden">
                 <img src={a.thumb} alt={a.name} className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" />
@@ -225,9 +226,9 @@ export default function AssetsPage() {
           ))}
         </div>
       )}
-      {tab === "fonts" && (
+      {(tab === "all" || tab === "fonts") && (
         <div className="space-y-2">
-          {(searched as typeof fontAssets).map((a) => (
+          {(searched as any[]).filter((a: any) => a.styles).map((a: any) => (
             <Card key={a.name} className="flex items-center gap-4 p-4 cursor-pointer hover:bg-white/[0.03] transition-colors">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600/20 to-blue-600/10 flex items-center justify-center flex-shrink-0">
                 <span className="text-lg font-bold text-violet-400">Aa</span>

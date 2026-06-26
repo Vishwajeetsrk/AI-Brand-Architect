@@ -1,11 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  extensions = [pgvector, citext]
+  extensions = [vector, citext]
 }
 
 enum UserRole {
@@ -158,8 +159,11 @@ model Organization {
   name      String   @map("name")
   slug      String   @unique @map("slug")
   logo      String?  @map("logo")
-  plan      PlanType @default(FREE) @map("plan")
-  createdAt DateTime @default(now()) @map("created_at")
+  plan        PlanType  @default(FREE) @map("plan")
+  description String?
+  website     String?
+  industry    String?
+  createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   members  OrganizationMember[]
@@ -544,4 +548,118 @@ model AuditLog {
   @@index([action])
   @@index([createdAt])
   @@map("audit_logs")
+}
+
+model Team {
+  id             String   @id @default(uuid()) @map("id")
+  name           String   @map("name")
+  description    String?  @map("description")
+  organizationId String?  @map("organization_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  channels Channel[]
+
+  @@map("teams")
+}
+
+model Channel {
+  id          String   @id @default(uuid()) @map("id")
+  name        String   @map("name")
+  description String?  @map("description")
+  topic       String?  @map("topic")
+  type        String?  @map("type")
+  teamId      String   @map("team_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  team     Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@index([teamId])
+  @@map("channels")
+}
+
+model Message {
+  id          String   @id @default(uuid()) @map("id")
+  content     String   @map("content")
+  channelId   String   @map("channel_id")
+  userId      String   @map("user_id")
+  mentions    String[] @map("mentions")
+  attachments String[] @map("attachments")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
+  @@map("messages")
+}
+
+model Calendar {
+  id        String   @id @default(uuid()) @map("id")
+  name      String   @map("name")
+  teamId    String?  @map("team_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  events CalendarEvent[]
+
+  @@map("calendars")
+}
+
+model CalendarEvent {
+  id           String   @id @default(uuid()) @map("id")
+  title        String   @map("title")
+  description  String?  @map("description")
+  startTime    DateTime @map("start_time")
+  endTime      DateTime @map("end_time")
+  calendarId   String   @map("calendar_id")
+  organizerId  String   @map("organizer_id")
+  participants String[] @map("participants")
+  recurring    Boolean  @default(false) @map("recurring")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  calendar Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+
+  @@index([calendarId])
+  @@map("calendar_events")
+}
+
+model SecurityEvent {
+  id             String   @id @default(uuid()) @map("id")
+  type           String   @map("type")
+  severity       String   @map("severity")
+  source         String?  @map("source")
+  description    String?  @map("description")
+  metadata       Json?    @map("metadata")
+  userId         String?  @map("user_id")
+  organizationId String?  @map("organization_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([type])
+  @@index([severity])
+  @@index([createdAt])
+  @@map("security_events")
+}
+
+model SecurityPolicy {
+  id          String   @id @default(uuid()) @map("id")
+  name        String   @map("name")
+  description String?  @map("description")
+  category    String   @map("category")
+  enabled     Boolean  @default(true) @map("enabled")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("security_policies")
+}
+
+model ComplianceReport {
+  id        String   @id @default(uuid()) @map("id")
+  name      String   @map("name")
+  status    String   @map("status")
+  details   Json?    @map("details")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("compliance_reports")
 }

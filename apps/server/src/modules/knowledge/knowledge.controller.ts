@@ -12,31 +12,43 @@ export class KnowledgeController {
 
   @Get('categories')
   @ApiOperation({ summary: 'Get knowledge categories' })
-  getCategories() { return this.knowledgeService.getCategories(); }
+  async getCategories(): Promise<any> { 
+    return this.knowledgeService.getCategories(); 
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get articles' })
-  getArticles(@Query('categoryId') categoryId?: string) { return this.knowledgeService.getArticles(categoryId); }
+  async getArticles(@Query('categoryId') categoryId?: string): Promise<any> { 
+    return this.knowledgeService.getArticles(categoryId); 
+  }
 
   @Get('search')
   @ApiOperation({ summary: 'Search articles' })
-  search(@Query('q') query: string) { return this.knowledgeService.search(query); }
+  async search(@Query('q') query: string): Promise<any> { 
+    return this.knowledgeService.search(query); 
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get article by ID' })
-  getArticle(@Param('id') id: string) { return this.knowledgeService.getArticle(id); }
+  async getArticle(@Param('id') id: string): Promise<any> { 
+    return this.knowledgeService.getArticle(id); 
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create article' })
-  createArticle(@Body() data: { title: string; content: string; summary?: string; category?: string; tags?: string[] }) {
+  async createArticle(@Body() data: { title: string; content: string; summary?: string; category?: string; tags?: string[] }): Promise<any> {
     return this.knowledgeService.createArticle(data);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update article' })
-  updateArticle(@Param('id') id: string, @Body() data: any) { return this.knowledgeService.updateArticle(id, data); }
+  async updateArticle(@Param('id') id: string, @Body() data: any): Promise<any> { 
+    return this.knowledgeService.updateArticle(id, data); 
+  }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete article' })
-  deleteArticle(@Param('id') id: string) { return this.knowledgeService.deleteArticle(id); }
+  async deleteArticle(@Param('id') id: string): Promise<any> { 
+    return this.knowledgeService.deleteArticle(id); 
+  }
 }

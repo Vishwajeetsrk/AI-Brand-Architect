@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Bot, BrainCircuit, CheckCircle, TrendingUp, DollarSign, ListChecks, GitBranch, Lightbulb } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";

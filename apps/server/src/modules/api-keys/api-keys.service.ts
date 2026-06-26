@@ -1,42 +1,23 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
+import { prisma } from "@nexora/database";
 import { CreateApiKeyDto } from './dto/create-api-key.dto';
-
-export interface ApiKey {
-  id: string;
-  name: string;
-  keyHash: string;
-  keyPrefix: string;
-  userId: string;
-  description: string | null;
-  isActive: boolean;
-  createdAt: Date;
-  lastUsedAt: Date | null;
-}
 
 @Injectable()
 export class ApiKeysService {
-  private apiKeys: ApiKey[] = [];
-
-  create(dto: CreateApiKeyDto, userId: string): { id: string; name: string; key: string; createdAt: Date } {
+  async create(dto: CreateApiKeyDto, userId: string) {
     const rawKey = `nxa_${uuidv4().replace(/-/g, '')}${crypto.randomBytes(16).toString('hex')}`;
     const keyHash = crypto.createHash('sha256').update(rawKey).digest('hex');
-    const keyPrefix = rawKey.substring(0, 12);
 
-    const apiKey: ApiKey = {
-      id: uuidv4(),
-      name: dto.name,
-      keyHash,
-      keyPrefix,
-      userId,
-      description: dto.description || null,
-      isActive: true,
-      createdAt: new Date(),
-      lastUsedAt: null,
-    };
-
-    this.apiKeys.push(apiKey);
+    const apiKey = await prisma.apiKey.create({
+      data: {
+        name: dto.name,
+        key: keyHash,
+        scopes: [],
+        userId,
+      },
+    });
 
     return {
       id: apiKey.id,
@@ -46,39 +27,58 @@ export class ApiKeysService {
     };
   }
 
-  findAll(userId: string): Omit<ApiKey, 'keyHash'>[] {
-    return this.apiKeys
-      .filter((k) => k.userId === userId)
-      .map(({ keyHash, ...rest }) => rest);
+  async findAll(userId: string) {
+    return prisma.apiKey.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        name: true,
+        scopes: true,
+        lastUsedAt: true,
+        expiresAt: true,
+        userId: true,
+        createdAt: true,
+      },
+    });
   }
 
-  findOne(id: string, userId: string): ApiKey {
-    const key = this.apiKeys.find((k) => k.id === id && k.userId === userId);
+  async findOne(id: string, userId: string) {
+    const key = await prisma.apiKey.findFirst({ where: { id, userId } });
     if (!key) {
       throw new NotFoundException(`API key with id ${id} not found`);
     }
     return key;
   }
 
-  validate(key: string): ApiKey | null {
+  async validate(key: string) {
     const keyHash = crypto.createHash('sha256').update(key).digest('hex');
-    const apiKey = this.apiKeys.find((k) => k.keyHash === keyHash && k.isActive);
-    if (apiKey) {
-      apiKey.lastUsedAt = new Date();
+    const apiKey = await prisma.apiKey.findUnique({ where: { key: keyHash } });
+    if (apiKey && (!apiKey.expiresAt || apiKey.expiresAt > new Date())) {
+      await prisma.apiKey.update({
+        where: { id: apiKey.id },
+        data: { lastUsedAt: new Date() },
+      });
+      return apiKey;
     }
-    return apiKey || null;
+    return null;
   }
 
-  revoke(id: string, userId: string): void {
-    const key = this.findOne(id, userId);
-    key.isActive = false;
-  }
-
-  remove(id: string, userId: string): void {
-    const index = this.apiKeys.findIndex((k) => k.id === id && k.userId === userId);
-    if (index === -1) {
+  async revoke(id: string, userId: string): Promise<void> {
+    const key = await prisma.apiKey.findFirst({ where: { id, userId } });
+    if (!key) {
       throw new NotFoundException(`API key with id ${id} not found`);
     }
-    this.apiKeys.splice(index, 1);
+    await prisma.apiKey.update({
+      where: { id },
+      data: { expiresAt: new Date() },
+    });
+  }
+
+  async remove(id: string, userId: string): Promise<void> {
+    const key = await prisma.apiKey.findFirst({ where: { id, userId } });
+    if (!key) {
+      throw new NotFoundException(`API key with id ${id} not found`);
+    }
+    await prisma.apiKey.delete({ where: { id } });
   }
 }

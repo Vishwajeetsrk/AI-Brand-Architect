@@ -1,44 +1,81 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { collaboration, CollaborationEngine } from '@nexora/collaboration';
-import type { Team, Channel, Message, Event } from '@nexora/collaboration';
+import { prisma } from '@nexora/database';
 
 @Injectable()
 export class CollaborationService {
-  private engine: CollaborationEngine;
-
-  constructor() {
-    this.engine = collaboration;
+  async getTeams() {
+    return prisma.team.findMany({ orderBy: { createdAt: 'desc' } });
   }
 
-  getTeams() { return this.engine.getTeams(); }
-
-  getTeam(id: string) {
-    const team = this.engine.getTeam(id);
+  async getTeam(id: string) {
+    const team = await prisma.team.findUnique({ where: { id } });
     if (!team) throw new NotFoundException('Team not found');
     return team;
   }
 
-  createTeam(data: Partial<Team> & { name: string; organizationId: string }) {
-    return this.engine.createTeam(data);
+  async createTeam(data: { name: string; description?: string; organizationId: string }) {
+    return prisma.team.create({
+      data: {
+        name: data.name,
+        description: data.description || null,
+        organizationId: data.organizationId,
+      },
+    });
   }
 
-  getChannels(teamId: string) { return this.engine.getChannels(teamId); }
-
-  createChannel(data: Partial<Channel> & { name: string; teamId: string }) {
-    return this.engine.createChannel(data);
+  async getChannels(teamId: string) {
+    return prisma.channel.findMany({ where: { teamId }, orderBy: { createdAt: 'desc' } });
   }
 
-  getMessages(channelId: string) { return this.engine.getMessages(channelId); }
-
-  createMessage(data: Partial<Message> & { content: string; channelId: string; userId: string }) {
-    return this.engine.createMessage(data);
+  async createChannel(data: { name: string; teamId: string; topic?: string; type?: string }) {
+    return prisma.channel.create({
+      data: {
+        name: data.name,
+        topic: data.topic || null,
+        type: data.type || null,
+        teamId: data.teamId,
+      },
+    });
   }
 
-  getCalendar() { return this.engine.getCalendars(); }
+  async getMessages(channelId: string) {
+    return prisma.message.findMany({ where: { channelId }, orderBy: { createdAt: 'asc' } });
+  }
 
-  getEvents(calendarId?: string) { return this.engine.getEvents(calendarId); }
+  async createMessage(data: { content: string; channelId: string; userId: string; mentions?: string[]; attachments?: string[] }) {
+    return prisma.message.create({
+      data: {
+        content: data.content,
+        channelId: data.channelId,
+        userId: data.userId,
+        mentions: data.mentions || [],
+        attachments: data.attachments || [],
+      },
+    });
+  }
 
-  createEvent(data: Partial<Event> & { title: string; startTime: string; endTime: string; calendarId: string; organizerId: string }) {
-    return this.engine.createEvent(data);
+  async getCalendar() {
+    const calendars = await prisma.calendar.findMany({ orderBy: { createdAt: 'desc' } });
+    return calendars;
+  }
+
+  async getEvents(calendarId?: string) {
+    const where = calendarId ? { calendarId } : {};
+    return prisma.calendarEvent.findMany({ where, orderBy: { startTime: 'asc' } });
+  }
+
+  async createEvent(data: { title: string; description?: string; startTime: string; endTime: string; calendarId: string; organizerId: string; participants?: string[]; recurring?: boolean }) {
+    return prisma.calendarEvent.create({
+      data: {
+        title: data.title,
+        description: data.description || null,
+        startTime: new Date(data.startTime),
+        endTime: new Date(data.endTime),
+        calendarId: data.calendarId,
+        organizerId: data.organizerId,
+        participants: data.participants || [],
+        recurring: data.recurring || false,
+      },
+    });
   }
 }

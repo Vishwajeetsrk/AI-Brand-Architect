@@ -10,7 +10,7 @@ export class MarketplaceController {
 
   @Get('categories')
   @ApiOperation({ summary: 'Get all listing categories' })
-  getCategories() { return this.marketplaceService.getCategories(); }
+  getCategories(): any { return this.marketplaceService.getCategories(); }
 
   @Get('listings')
   @ApiOperation({ summary: 'Search marketplace listings' })
@@ -25,39 +25,36 @@ export class MarketplaceController {
     @Query('sortOrder') sortOrder?: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string,
-  ) {
+  ): any {
     return this.marketplaceService.search({
-      query, category, type: type as any,
+      query, category,
       minPrice: minPrice ? Number(minPrice) : undefined,
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
-      minRating: minRating ? Number(minRating) : undefined,
-      sortBy: sortBy as any, sortOrder: sortOrder as any,
-      page: page ? Number(page) : undefined,
-      limit: limit ? Number(limit) : undefined,
+      sortBy: sortBy as any,
     });
   }
 
   @Get('listings/featured')
   @ApiOperation({ summary: 'Get featured listings' })
-  getFeatured() { return this.marketplaceService.getFeatured(); }
+  getFeatured(): any { return this.marketplaceService.getFeatured(); }
 
   @Get('listings/top-rated')
   @ApiOperation({ summary: 'Get top rated listings' })
-  getTopRated() { return this.marketplaceService.getTopRated(); }
+  getTopRated(): any { return this.marketplaceService.getTopRated(); }
 
   @Get('listings/best-selling')
   @ApiOperation({ summary: 'Get best selling listings' })
-  getBestSelling() { return this.marketplaceService.getBestSelling(); }
+  getBestSelling(): any { return this.marketplaceService.getBestSelling(); }
 
   @Get('listings/:id')
   @ApiOperation({ summary: 'Get listing by ID' })
-  getListing(@Param('id') id: string) { return this.marketplaceService.getListing(id); }
+  getListing(@Param('id') id: string): any { return this.marketplaceService.getListing(id); }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Post('listings')
   @ApiOperation({ summary: 'Publish a new listing' })
-  createListing(@Body() data: any) {
+  createListing(@Body() data: any): any {
     return this.marketplaceService.createListing(data);
   }
 
@@ -65,19 +62,19 @@ export class MarketplaceController {
   @UseGuards(AuthGuard)
   @Post('listings/:id/purchase')
   @ApiOperation({ summary: 'Purchase a listing' })
-  purchase(@Param('id') id: string, @Body() data: { userId: string }) {
+  purchase(@Param('id') id: string, @Body() data: { userId: string }): any {
     return this.marketplaceService.purchase(id, data.userId);
   }
 
   @Get('listings/:id/reviews')
   @ApiOperation({ summary: 'Get reviews for a listing' })
-  getReviews(@Param('id') id: string) { return this.marketplaceService.getReviews(id); }
+  getReviews(@Param('id') id: string): any { return this.marketplaceService.getReviews(id); }
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Post('listings/:id/reviews')
   @ApiOperation({ summary: 'Add a review to a listing' })
-  addReview(@Param('id') id: string, @Body() data: { userId: string; userName: string; rating: number; content: string }) {
+  addReview(@Param('id') id: string, @Body() data: { userId: string; userName: string; rating: number; content: string }): any {
     return this.marketplaceService.addReview(id, data.userId, data.userName, data.rating, data.content);
   }
 
@@ -85,7 +82,7 @@ export class MarketplaceController {
   @UseGuards(AuthGuard)
   @Get('purchases')
   @ApiOperation({ summary: 'Get user purchases' })
-  getUserPurchases(@Query('userId') userId: string) {
+  getUserPurchases(@Query('userId') userId: string): any {
     return this.marketplaceService.getUserPurchases(userId);
   }
 }

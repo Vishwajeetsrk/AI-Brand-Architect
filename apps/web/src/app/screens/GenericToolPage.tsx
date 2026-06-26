@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Sparkles, RefreshCw } from "lucide-react";
 import { PageHeader, Card, Btn, EmptyPlaceholder } from "../components/shared";

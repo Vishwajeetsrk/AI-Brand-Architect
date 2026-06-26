@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Filter, Plus, Grid, List, Wand2, MoreHorizontal } from "lucide-react";

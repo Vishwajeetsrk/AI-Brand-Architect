@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { RefreshCw, Sparkles, ImagePlus, Download } from "lucide-react";

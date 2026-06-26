@@ -16,31 +16,31 @@ export class AgentsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new AI agent' })
-  create(@Body() dto: CreateAgentDto, @CurrentUser() user: JwtPayload) {
+  create(@Body() dto: CreateAgentDto, @CurrentUser() user: JwtPayload): Promise<any> {
     return this.agentsService.create(dto, user.sub);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all agents' })
-  findAll() {
+  findAll(): Promise<any> {
     return this.agentsService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get an agent by id' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<any> {
     return this.agentsService.findOne(id);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete an agent' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<any> {
     return this.agentsService.remove(id);
   }
 
   @Post(':id/execute')
   @ApiOperation({ summary: 'Execute an agent with input data' })
-  execute(@Param('id') id: string, @Body() dto: ExecuteAgentDto) {
+  execute(@Param('id') id: string, @Body() dto: ExecuteAgentDto): Promise<any> {
     return this.agentsService.execute(id, dto);
   }
 }

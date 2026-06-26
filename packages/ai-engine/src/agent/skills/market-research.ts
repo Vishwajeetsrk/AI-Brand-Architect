@@ -378,7 +378,7 @@ export class MarketResearchSkill implements Skill {
       differentiators,
       targetSegments: ['Early adopters', 'Mid-market companies', 'Enterprise organizations'],
       valueProposition: description
-        ? `${brandName} helps ${targetAudience || 'organizations'} achieve ${description.toLowerCase()} through our comprehensive platform.`
+        ? `${brandName} helps organizations achieve ${description.toLowerCase()} through our comprehensive platform.`
         : `${brandName} empowers organizations to achieve more through innovative ${industry} solutions.`,
       competitiveAdvantage: strengths.length > 0 ? strengths[0] : 'Innovation and market focus',
     };

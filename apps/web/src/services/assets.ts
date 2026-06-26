@@ -16,7 +16,7 @@ export const assetService = {
   getAll: (projectId?: string) => api.get<Asset[]>(`/assets${projectId ? `?projectId=${projectId}` : ''}`),
   create: (data: FormData) => {
     const token = localStorage.getItem('nexora_token');
-    return fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/assets`, {
+    return fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'}/assets`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
       body: data,

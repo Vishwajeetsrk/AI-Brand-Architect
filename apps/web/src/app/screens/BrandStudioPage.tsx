@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Sparkles, Globe, Megaphone, ImagePlus, Layout, Monitor, ArrowRight } from "lucide-react";
 import { Btn, Card, PageHeader } from "../components/shared";

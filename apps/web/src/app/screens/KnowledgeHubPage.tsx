@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Search, BookOpen, Plus } from "lucide-react";

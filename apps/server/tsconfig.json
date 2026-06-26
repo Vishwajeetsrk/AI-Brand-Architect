@@ -18,6 +18,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
+      "@nexora/ai-engine": ["../../packages/ai-engine/src"],
       "@nexora/analytics": ["../../packages/analytics/src"],
       "@nexora/automation": ["../../packages/automation/src"],
       "@nexora/commerce": ["../../packages/commerce/src"],

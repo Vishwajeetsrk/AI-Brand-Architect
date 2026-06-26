@@ -2,7 +2,7 @@ export function Btn({
   children, variant = "primary", size = "md", onClick, className = "", icon: Icon, disabled,
 }: {
   children?: React.ReactNode; variant?: "primary" | "secondary" | "ghost" | "danger" | "outline";
-  size?: "sm" | "md" | "lg"; onClick?: () => void; className?: string;
+  size?: "sm" | "md" | "lg"; onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; className?: string;
   icon?: React.ElementType; disabled?: boolean;
 }) {
   const base = "inline-flex items-center gap-2 rounded-lg font-semibold transition-all duration-150 cursor-pointer select-none";

@@ -1,8 +1,9 @@
+"use client";
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
 import {
   BookOpen, ChevronDown, ChevronRight, Play, CheckCircle, Clock,
-  Star, Users, BarChart3, Award, GraduationCap, Search, Filter,
+  Star, User, Users, BarChart3, Award, GraduationCap, Search, Filter,
   ArrowLeft, ArrowRight, AlertCircle, Zap, Layers, Trophy,
   Copy, X, RefreshCw,
 } from "lucide-react";

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Paintbrush, Megaphone, Rocket, Crown, Check, CheckCircle, ChevronLeft, ChevronRight, AtSign } from "lucide-react";

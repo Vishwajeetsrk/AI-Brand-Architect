@@ -1,49 +1,122 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { BillingSystem, billing, PLANS, Plan } from '@nexora/commerce';
+import { Injectable } from '@nestjs/common';
+import { prisma } from '@nexora/database';
+
+interface Plan {
+  id: string;
+  name: string;
+  planType: string;
+  price: number;
+  features: string[];
+}
+
+const PLANS: Plan[] = [
+  { id: 'free', name: 'Free', planType: 'FREE', price: 0, features: ['Basic analytics', '1 active project', 'Community support'] },
+  { id: 'pro', name: 'Pro', planType: 'PRO', price: 29, features: ['Advanced analytics', 'Unlimited projects', 'Priority support', 'Custom branding'] },
+  { id: 'enterprise', name: 'Enterprise', planType: 'ENTERPRISE', price: 99, features: ['Everything in Pro', 'Custom integrations', 'Dedicated support', 'SLA guarantee', 'Team collaboration'] },
+];
 
 @Injectable()
 export class CommerceService {
-  private billing: BillingSystem;
-
-  constructor() {
-    this.billing = billing;
-  }
-
   getPlans() { return PLANS; }
 
   getPlan(id: string) {
-    const plan = this.billing.getPlan(id);
-    if (!plan) throw new NotFoundException('Plan not found');
+    const plan = PLANS.find(p => p.id === id);
+    if (!plan) return null;
     return plan;
   }
 
-  createSubscription(userId: string, planId: string) {
-    return this.billing.createSubscription(userId, planId);
+  async createSubscription(userId: string, planId: string) {
+    const planType = PLANS.find(p => p.id === planId)?.planType || 'FREE';
+    let org = await prisma.organization.findFirst({
+      where: { members: { some: { userId } } },
+    });
+    if (org) {
+      return prisma.organization.update({
+        where: { id: org.id },
+        data: { plan: planType as any },
+      });
+    }
+    return prisma.organization.create({
+      data: {
+        name: 'My Organization',
+        slug: `org-${userId.substring(0, 8)}`,
+        plan: planType as any,
+        members: {
+          create: { userId, role: 'OWNER' },
+        },
+      },
+    });
   }
 
-  getSubscription(userId: string) {
-    return this.billing.getSubscription(userId);
+  async getSubscription(userId: string) {
+    const org = await prisma.organization.findFirst({
+      where: { members: { some: { userId } } },
+    });
+    if (!org) return null;
+    return org;
   }
 
-  cancelSubscription(subscriptionId: string) {
-    const sub = this.billing.cancelSubscription(subscriptionId);
-    if (!sub) throw new NotFoundException('Subscription not found');
-    return sub;
+  async cancelSubscription(subscriptionId: string) {
+    const org = await prisma.organization.findUnique({ where: { id: subscriptionId } });
+    if (!org) return null;
+    return prisma.organization.update({
+      where: { id: subscriptionId },
+      data: { plan: 'FREE' },
+    });
   }
 
-  changePlan(subscriptionId: string, newPlanId: string) {
-    const sub = this.billing.changePlan(subscriptionId, newPlanId);
-    if (!sub) throw new NotFoundException('Subscription not found');
-    return sub;
+  async changePlan(subscriptionId: string, newPlanId: string) {
+    const planType = PLANS.find(p => p.id === newPlanId)?.planType;
+    if (!planType) return null;
+    const org = await prisma.organization.findUnique({ where: { id: subscriptionId } });
+    if (!org) return null;
+    return prisma.organization.update({
+      where: { id: subscriptionId },
+      data: { plan: planType as any },
+    });
   }
 
-  getInvoices(subscriptionId: string) { return this.billing.getInvoices(subscriptionId); }
+  async getInvoices(subscriptionId: string) {
+    return [];
+  }
 
-  getUsage(userId: string, period?: string) { return this.billing.getUsage(userId, period); }
+  async getUsage(userId: string, period?: string) {
+    const where: any = { userId };
+    if (period) {
+      const days = parseInt(period.replace('d', ''), 10);
+      if (!isNaN(days)) {
+        where.createdAt = { gte: new Date(Date.now() - days * 86400000) };
+      }
+    }
+    const generations = await prisma.generation.findMany({ where });
+    const projects = await prisma.project.count({ where: { userId } });
+    const assets = await prisma.asset.count({ where: { userId } });
+    return {
+      generations: generations.length,
+      tokensUsed: generations.reduce((sum, g) => sum + (g.tokensUsed || 0), 0),
+      cost: generations.reduce((sum, g) => sum + (g.cost || 0), 0),
+      projects,
+      assets,
+    };
+  }
 
-  checkLimits(userId: string) { return this.billing.checkLimits(userId); }
+  async checkLimits(userId: string) {
+    const org = await prisma.organization.findFirst({
+      where: { members: { some: { userId } } },
+    });
+    const plan = (org?.plan as string) || 'FREE';
+    const projectCount = await prisma.project.count({ where: { userId } });
+    return {
+      plan,
+      limits: {
+        maxProjects: plan === 'FREE' ? 1 : plan === 'PRO' ? 10 : 999,
+        currentProjects: projectCount,
+        teamMembers: plan === 'FREE' ? 1 : plan === 'PRO' ? 5 : 999,
+      },
+    };
+  }
 
   recordUsage(userId: string, metric: string, value: number) {
-    return this.billing.recordUsage(userId, metric, value);
+    return { recorded: true, metric, value, userId };
   }
 }

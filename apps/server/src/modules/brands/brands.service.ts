@@ -1,90 +1,60 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { prisma } from "@nexora/database";
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 
-export interface Brand {
-  id: string;
-  name: string;
-  description: string | null;
-  primaryColor: string | null;
-  industry: string | null;
-  keywords: string[];
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 @Injectable()
 export class BrandsService {
-  private brands: Brand[] = [];
-
-  create(dto: CreateBrandDto, userId: string): Brand {
-    const brand: Brand = {
-      id: uuidv4(),
-      name: dto.name,
-      description: dto.description || null,
-      primaryColor: dto.primaryColor || null,
-      industry: dto.industry || null,
-      keywords: dto.keywords || [],
-      userId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.brands.push(brand);
-    return brand;
+  async create(dto: CreateBrandDto, userId: string) {
+    return prisma.brand.create({
+      data: {
+        name: dto.name,
+        description: dto.description ?? null,
+        industry: dto.industry ?? null,
+        userId,
+      },
+    });
   }
 
-  findAll(userId?: string, search?: string): Brand[] {
-    let result = this.brands;
-    if (userId) {
-      result = result.filter((b) => b.userId === userId);
-    }
+  async findAll(userId?: string, search?: string) {
+    const where: any = {};
+    if (userId) where.userId = userId;
     if (search) {
-      const lower = search.toLowerCase();
-      result = result.filter(
-        (b) =>
-          b.name.toLowerCase().includes(lower) ||
-          (b.description && b.description.toLowerCase().includes(lower)),
-      );
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ];
     }
-    return result;
+    return prisma.brand.findMany({ where, orderBy: { createdAt: 'desc' } });
   }
 
-  findOne(id: string): Brand {
-    const brand = this.brands.find((b) => b.id === id);
+  async findOne(id: string) {
+    const brand = await prisma.brand.findUnique({ where: { id } });
     if (!brand) {
       throw new NotFoundException(`Brand with id ${id} not found`);
     }
     return brand;
   }
 
-  update(id: string, dto: UpdateBrandDto): Brand {
-    const index = this.brands.findIndex((b) => b.id === id);
-    if (index === -1) {
+  async update(id: string, dto: UpdateBrandDto) {
+    const existing = await prisma.brand.findUnique({ where: { id } });
+    if (!existing) {
       throw new NotFoundException(`Brand with id ${id} not found`);
     }
 
-    const updated: Brand = {
-      ...this.brands[index],
-      updatedAt: new Date(),
-    };
+    const data: any = {};
+    if (dto.name !== undefined) data.name = dto.name;
+    if (dto.description !== undefined) data.description = dto.description;
+    if (dto.industry !== undefined) data.industry = dto.industry;
 
-    if (dto.name !== undefined) updated.name = dto.name;
-    if (dto.description !== undefined) updated.description = dto.description;
-    if (dto.primaryColor !== undefined) updated.primaryColor = dto.primaryColor;
-    if (dto.industry !== undefined) updated.industry = dto.industry;
-    if (dto.keywords !== undefined) updated.keywords = dto.keywords;
-
-    this.brands[index] = updated;
-    return updated;
+    return prisma.brand.update({ where: { id }, data });
   }
 
-  remove(id: string): void {
-    const index = this.brands.findIndex((b) => b.id === id);
-    if (index === -1) {
+  async remove(id: string): Promise<void> {
+    const existing = await prisma.brand.findUnique({ where: { id } });
+    if (!existing) {
       throw new NotFoundException(`Brand with id ${id} not found`);
     }
-    this.brands.splice(index, 1);
+    await prisma.brand.delete({ where: { id } });
   }
 }

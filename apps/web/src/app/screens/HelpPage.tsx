@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Search, BookOpen, Bot, CreditCard, Users, Key, Shield, ArrowRight, FileText } from "lucide-react";

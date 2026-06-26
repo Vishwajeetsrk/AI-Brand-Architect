@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { RefreshCw, CheckCircle, Clock } from "lucide-react";

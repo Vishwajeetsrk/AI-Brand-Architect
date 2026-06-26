@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Download, Image, FileImage, FileType, FileVideo, File, Check, ChevronDown } from "lucide-react";

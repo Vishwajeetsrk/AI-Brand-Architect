@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Save, Moon, Sun, Monitor, Shield, Bell, Laptop, User } from "lucide-react";

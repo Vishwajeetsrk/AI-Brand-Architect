@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Rocket, Play, Check, ChevronLeft, ChevronRight } from "lucide-react";

@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { CreditCard, Download, Check, Crown } from "lucide-react";
 import { Btn, Card, Badge, PageHeader } from "../components/shared";

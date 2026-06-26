@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Activity, Filter, Download, User, LogIn, Edit3, Trash2, Settings, Share2, Upload, Globe } from "lucide-react";
 import { Btn, Card, Badge, Avatar, PageHeader } from "../components/shared";

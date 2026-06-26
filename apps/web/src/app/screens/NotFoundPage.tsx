@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Home, ArrowLeft, Search } from "lucide-react";
 import { Btn } from "../components/shared";

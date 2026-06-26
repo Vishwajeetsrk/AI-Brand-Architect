@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { Bot, CheckCircle, Zap, Activity, Sparkles, Globe, PenTool, Image, Code2 } from "lucide-react";
 import { Card, Badge, StatCard, PageHeader } from "../components/shared";

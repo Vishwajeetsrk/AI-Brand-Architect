@@ -1,3 +1,4 @@
+"use client";
 import { motion } from "motion/react";
 import { User, Mail, Phone, Globe, MapPin, Building, Calendar, AtSign, Crown, LogOut, Edit2, Bell, Shield, Eye } from "lucide-react";
 import { Btn, Card, Badge, Avatar, Toggle, PageHeader, Input } from "../components/shared";

@@ -1,3 +1,4 @@
+"use client";
 import { CheckCircle } from "lucide-react";
 import { Btn } from "../components/shared";
 import AuthCard from "./AuthCard";

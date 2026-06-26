@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Key, Activity, Shield, Eye, EyeOff, RefreshCw, X, Terminal, Copy, Check } from "lucide-react";

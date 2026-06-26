@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Plus, FileText, CheckCircle, Folder, ImagePlus, Activity, Upload, Download, Code2 } from "lucide-react";

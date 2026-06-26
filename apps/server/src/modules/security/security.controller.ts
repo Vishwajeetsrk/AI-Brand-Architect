@@ -21,7 +21,7 @@ export class SecurityController {
     @Query('type') type?: string,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
-  ) {
+  ): Promise<any> {
     return this.securityService.getEvents(
       severity as any, type as any, startDate, endDate,
     );
@@ -29,45 +29,45 @@ export class SecurityController {
 
   @Get('events/:id')
   @ApiOperation({ summary: 'Get a single security event by ID' })
-  async getEvent(@Param('id') id: string) {
+  async getEvent(@Param('id') id: string): Promise<any> {
     return this.securityService.getEvent(id);
   }
 
   @Get('policies')
   @ApiOperation({ summary: 'Get all security policies' })
   @ApiQuery({ name: 'category', required: false })
-  async getPolicies(@Query('category') category?: string) {
+  async getPolicies(@Query('category') category?: string): Promise<any> {
     return this.securityService.getPolicies(category as any);
   }
 
   @Put('policies/:id')
   @ApiOperation({ summary: 'Toggle policy active/inactive status' })
-  async togglePolicy(@Param('id') id: string) {
+  async togglePolicy(@Param('id') id: string): Promise<any> {
     return this.securityService.togglePolicy(id);
   }
 
   @Get('audit-logs')
   @ApiOperation({ summary: 'Get audit logs with optional search' })
   @ApiQuery({ name: 'query', required: false })
-  async getAuditLogs(@Query('query') query?: string) {
+  async getAuditLogs(@Query('query') query?: string): Promise<any> {
     return this.securityService.getAuditLogs(query);
   }
 
   @Get('compliance')
   @ApiOperation({ summary: 'Get compliance reports' })
-  async getCompliance() {
+  async getCompliance(): Promise<any> {
     return this.securityService.getCompliance();
   }
 
   @Get('dashboard')
   @ApiOperation({ summary: 'Get security dashboard summary' })
-  async getDashboard() {
+  async getDashboard(): Promise<any> {
     return this.securityService.getDashboard();
   }
 
   @Get('simulate')
   @ApiOperation({ summary: 'Run threat simulation' })
-  async simulate() {
+  async simulate(): Promise<any> {
     return this.securityService.runThreatSimulation();
   }
 }

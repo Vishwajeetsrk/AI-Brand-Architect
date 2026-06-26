@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import {
@@ -98,7 +99,7 @@ function ContactCard({ c }: { c: typeof contacts[0] }) {
             <span className="text-sm font-semibold text-white truncate">{c.name}</span>
             <Badge color={statusColor[c.status]}>{c.status}</Badge>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">{c.company} &middot; {c.position || "—"}</p>
+          <p className="text-xs text-slate-500 mt-0.5">{c.company}</p>
           <div className="flex items-center gap-3 mt-2 text-xs text-slate-500">
             <span className="flex items-center gap-1"><Mail size={10} />{c.email}</span>
             <span className="flex items-center gap-1"><Phone size={10} />{c.phone}</span>

@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Monitor, Plus, Download, Play, Star, Clock } from "lucide-react";

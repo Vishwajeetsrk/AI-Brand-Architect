@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { AtSign, Send, ChevronLeft, CheckCircle } from "lucide-react";
 import { Btn, Input } from "../components/shared";

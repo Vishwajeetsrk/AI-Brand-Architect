@@ -148,12 +148,12 @@ export class AgentRuntime {
       model: config.model.model,
     });
 
+    // Fix: Don't pass timestamp, let memory-store handle it
     await this.memoryStore.store({
       id: crypto.randomUUID(),
       type: 'short_term',
       content: `Task: ${task.description}\nResult: ${response.content}`,
       metadata: { taskId: task.id, agentId: config.id, sessionId: context.sessionId },
-      timestamp: Date.now(),
     }, apiKey);
 
     return { content: response.content, usage: response.usage };
@@ -203,6 +203,7 @@ export class AgentRuntime {
   }
 
   private async recordSessionContext(config: AgentConfig, context: AgentContext, input: string, apiKey?: string): Promise<void> {
+    // Fix: Don't pass timestamp, let memory-store handle it
     await this.memoryStore.store({
       id: `session-${context.sessionId}`,
       type: 'working',
@@ -216,7 +217,6 @@ export class AgentRuntime {
         brandId: context.brandId,
         input,
       },
-      timestamp: Date.now(),
     }, apiKey);
   }
 }
