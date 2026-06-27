@@ -44,7 +44,7 @@ export class AgentsService {
     return agent;
   }
 
-  async execute(id: string, dto: ExecuteAgentDto): Promise<AgentResponseDto> {
+  async execute(id: string, dto: ExecuteAgentDto): Promise<any> {
     const agent = await this.findOne(id);
     const config: AgentConfig = {
       id: agent.id,
@@ -58,7 +58,7 @@ export class AgentsService {
     return this.agentRuntime.execute(config, dto);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<any> {
     const agent = await this.findOne(id);
     await prisma.agent.delete({ where: { id: agent.id } });
   }

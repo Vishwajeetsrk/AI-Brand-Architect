@@ -9,6 +9,7 @@
     "dev:web": "pnpm --filter @nexora/web dev",
     "dev:server": "pnpm --filter @nexora/server dev",
     "build:web": "pnpm --filter @nexora/web build",
-    "build:server": "pnpm --filter @nexora/server build"
+    "build:server": "pnpm --filter @nexora/server build",
+    "test": "pnpm --filter @nexora/web test"
   }
 }

@@ -5,8 +5,8 @@
   "main": "electron/main.js",
   "scripts": {
     "dev": "electron .",
-    "build": "electron-builder",
-    "dist": "electron-builder --win --mac --linux"
+    "build": "pnpm run build:web && electron-builder",
+    "dist": "pnpm run build:web && electron-builder --win --mac --linux"
   },
   "dependencies": {
     "electron-store": "^10.0.0",
@@ -20,7 +20,7 @@
     "appId": "com.nexora.app",
     "productName": "NEXORA",
     "directories": { "output": "dist" },
-    "files": ["electron/**/*", "../web/dist/**/*"],
+    "files": ["electron/**/*"],
     "win": { "target": "nsis", "icon": "../web/public/logo.svg" },
     "mac": { "target": "dmg", "icon": "../web/public/logo.svg" },
     "linux": { "target": "AppImage", "icon": "../web/public/logo.svg" },

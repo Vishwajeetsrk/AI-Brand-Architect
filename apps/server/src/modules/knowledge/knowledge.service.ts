@@ -3,22 +3,22 @@ import { prisma, KnowledgeDocument, KnowledgeBase } from '@nexora/database';
 
 @Injectable()
 export class KnowledgeService {
-  async getCategories(): Promise<KnowledgeBase[]> {
+  async getCategories(): Promise<any> {
     return prisma.knowledgeBase.findMany();
   }
 
-  async getArticles(knowledgeBaseId?: string): Promise<KnowledgeDocument[]> {
+  async getArticles(knowledgeBaseId?: string): Promise<any> {
     const where = knowledgeBaseId ? { knowledgeBaseId } : {};
     return prisma.knowledgeDocument.findMany({ where });
   }
 
-  async getArticle(id: string): Promise<KnowledgeDocument | null> {
+  async getArticle(id: string): Promise<any> {
     const article = await prisma.knowledgeDocument.findUnique({ where: { id } });
     if (!article) throw new NotFoundException('Article not found');
     return article;
   }
 
-  async createArticle(data: any): Promise<KnowledgeDocument> {
+  async createArticle(data: any): Promise<any> {
     const baseId = data.category || 'default';
     await prisma.knowledgeBase.upsert({
       where: { id: baseId },
@@ -41,7 +41,7 @@ export class KnowledgeService {
     });
   }
 
-  async updateArticle(id: string, data: any): Promise<KnowledgeDocument> {
+  async updateArticle(id: string, data: any): Promise<any> {
     const existing = await prisma.knowledgeDocument.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Article not found');
     const meta = (existing.metadata as Record<string, any>) || {};
@@ -63,14 +63,14 @@ export class KnowledgeService {
     });
   }
 
-  async deleteArticle(id: string): Promise<{ deleted: boolean }> {
+  async deleteArticle(id: string): Promise<any> {
     const existing = await prisma.knowledgeDocument.findUnique({ where: { id } });
     if (!existing) throw new NotFoundException('Article not found');
     await prisma.knowledgeDocument.delete({ where: { id } });
     return { deleted: true };
   }
 
-  async search(query: string): Promise<KnowledgeDocument[]> {
+  async search(query: string): Promise<any> {
     return prisma.knowledgeDocument.findMany({
       where: {
         OR: [
