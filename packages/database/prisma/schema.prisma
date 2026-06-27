@@ -663,3 +663,189 @@ model ComplianceReport {
 
   @@map("compliance_reports")
 }
+
+enum AgentRoleType {
+  PLANNER
+  EXECUTOR
+  COORDINATOR
+  SUPERVISOR
+  SPECIALIST
+}
+
+enum AgentStatus {
+  REGISTERED
+  INITIALIZING
+  IDLE
+  PLANNING
+  EXECUTING
+  MONITORING
+  RECOVERING
+  SHUTTING_DOWN
+  ARCHIVED
+  FAILED
+}
+
+enum CoordinationStrategy {
+  SEQUENTIAL
+  PARALLEL
+  SWARM
+  PIPELINE
+  HIERARCHY
+  DEBATE
+  CONSENSUS
+}
+
+enum AgentTaskStatus {
+  PENDING
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+  NEEDS_REVIEW
+}
+
+model AgentGoal {
+  id              String     @id @default(uuid()) @map("id")
+  description     String     @map("description")
+  priority        Int        @default(50) @map("priority")
+  deadline        DateTime?  @map("deadline")
+  constraints     String[]   @map("constraints")
+  successCriteria String[]   @map("success_criteria")
+  context         Json?      @map("context")
+  status          AgentTaskStatus @default(PENDING) @map("status")
+  parentGoalId    String?    @map("parent_goal_id")
+  userId          String     @map("user_id")
+  organizationId  String?    @map("organization_id")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  completedAt     DateTime?  @map("completed_at")
+
+  parentGoal   AgentGoal?    @relation("GoalHierarchy", fields: [parentGoalId], references: [id])
+  subGoals     AgentGoal[]   @relation("GoalHierarchy")
+  tasks        AgentTask[]
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+  @@map("agent_goals")
+}
+
+model AgentTask {
+  id                  String          @id @default(uuid()) @map("id")
+  description         String          @map("description")
+  goalId              String          @map("goal_id")
+  assignedAgentId     String?         @map("assigned_agent_id")
+  assignedAgentRole   AgentRoleType?  @map("assigned_agent_role")
+  priority            Int             @default(50) @map("priority")
+  dependencies        String[]        @map("dependencies")
+  estimatedComplexity Int             @default(1) @map("estimated_complexity")
+  requiredCapabilities String[]       @map("required_capabilities")
+  status              AgentTaskStatus @default(PENDING) @map("status")
+  result              String?         @map("result")
+  error               String?         @map("error")
+  retryCount          Int             @default(0) @map("retry_count")
+  maxRetries          Int             @default(3) @map("max_retries")
+  metadata            Json?           @map("metadata")
+  userId              String          @map("user_id")
+  createdAt           DateTime        @default(now()) @map("created_at")
+  startedAt           DateTime?       @map("started_at")
+  completedAt         DateTime?       @map("completed_at")
+
+  goal AgentGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
+  @@index([assignedAgentId])
+  @@index([status])
+  @@index([priority])
+  @@map("agent_tasks")
+}
+
+model AgentCollaboration {
+  id              String              @id @default(uuid()) @map("id")
+  strategy        CoordinationStrategy @map("strategy")
+  goal            String              @map("goal")
+  agentIds        String[]            @map("agent_ids")
+  status          AgentTaskStatus     @default(PENDING) @map("status")
+  input           Json?               @map("input")
+  output          Json?               @map("output")
+  startedAt       DateTime            @default(now()) @map("started_at")
+  completedAt     DateTime?           @map("completed_at")
+  userId          String              @map("user_id")
+
+  @@index([status])
+  @@index([userId])
+  @@map("agent_collaborations")
+}
+
+model AgentCommunication {
+  id            String   @id @default(uuid()) @map("id")
+  fromAgentId   String   @map("from_agent_id")
+  toAgentId     String?  @map("to_agent_id")
+  topic         String   @map("topic")
+  type          String   @map("type")
+  payload       Json     @map("payload")
+  replyToId     String?  @map("reply_to_id")
+  priority      Int      @default(50) @map("priority")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([fromAgentId])
+  @@index([toAgentId])
+  @@index([topic])
+  @@index([createdAt])
+  @@map("agent_communications")
+}
+
+model AgentReflection {
+  id              String   @id @default(uuid()) @map("id")
+  taskId          String   @map("task_id")
+  score           Float    @map("score")
+  passed          Boolean  @map("passed")
+  issues          String[] @map("issues")
+  improvements    String[] @map("improvements")
+  confidence      Float    @map("confidence")
+  needsRetry      Boolean  @map("needs_retry")
+  retryCount      Int      @default(0) @map("retry_count")
+  suggestedChanges String? @map("suggested_changes")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([taskId])
+  @@map("agent_reflections")
+}
+
+model AgentSkill {
+  id           String   @id @default(uuid()) @map("id")
+  name         String   @unique @map("name")
+  description  String   @map("description")
+  category     String   @map("category")
+  version      String   @default("1.0.0") @map("version")
+  config       Json?    @map("config")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@map("agent_skills")
+}
+
+model AgentCapability {
+  id          String   @id @default(uuid()) @map("id")
+  name        String   @unique @map("name")
+  description String   @map("description")
+  category    String   @map("category")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([category])
+  @@map("agent_capabilities")
+}
+
+model SafetyPolicyRule {
+  id        String  @id @default(uuid()) @map("id")
+  policyId  String  @map("policy_id")
+  ruleType  String  @map("rule_type")
+  config    Json    @map("config")
+  action    String  @default("deny") @map("action")
+  enabled   Boolean @default(true) @map("enabled")
+
+  @@index([policyId])
+  @@map("safety_policy_rules")
+}

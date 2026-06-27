@@ -10,3 +10,4 @@ export * from './agent/agent-runtime';
 export * from './agent/skills/brand-analysis';
 export * from './agent/skills/content-generation';
 export * from './agent/skills/market-research';
+export * from './agentos';
