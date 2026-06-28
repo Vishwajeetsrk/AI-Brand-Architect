@@ -166,7 +166,7 @@ export class BrandsService {
       description: generateBrandDto.prompt,
       industry: generateBrandDto.industry,
       userId,
-      organizationId: null,
+      organizationId: undefined,
       status: 'generated',
       aiGenerated: true,
       generationPrompt: generateBrandDto.prompt,
