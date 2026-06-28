@@ -9,5 +9,6 @@ allowBuilds:
   bcrypt: true
   electron: true
   esbuild: true
+  msgpackr-extract: set this to true or false
   prisma: true
   sharp: true
