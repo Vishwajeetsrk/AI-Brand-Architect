@@ -4,12 +4,27 @@ import { AtSign, Lock, Eye, EyeOff } from "lucide-react";
 import { Btn, Input } from "../components/shared";
 import { BrandIcon } from "../components/ui/brand-icon";
 import AuthCard from "./AuthCard";
+import { useAuth } from "../../hooks/useAuth";
 import type { Screen } from "../types";
 
 export default function SignInPage({ navigate }: { navigate: (s: Screen) => void }) {
-  const [email, setEmail] = useState("alex@designstudio.com");
-  const [pass, setPass] = useState("••••••••••");
+  const { login, isLoading } = useAuth();
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    setError("");
+    if (!email || !pass) { setError("Please fill in all fields"); return; }
+    try {
+      await login(email, pass);
+      navigate("onboard");
+    } catch (e: any) {
+      setError(e.message || "Invalid credentials");
+    }
+  };
+
   const socials = [
     { name: "Continue with Google", brand: "Google", color: "from-red-500/20 to-orange-500/10" },
     { name: "Continue with GitHub", brand: "GitHub", color: "from-slate-600/20 to-slate-500/10" },
@@ -46,7 +61,8 @@ export default function SignInPage({ navigate }: { navigate: (s: Screen) => void
             </button>
           </div>
         </div>
-        <Btn variant="primary" className="w-full justify-center mt-2" size="lg" onClick={() => navigate("onboard")}>Sign In</Btn>
+        {error && <p className="text-xs text-red-400">{error}</p>}
+        <Btn variant="primary" className="w-full justify-center mt-2" size="lg" onClick={handleSubmit} disabled={isLoading}>{isLoading ? "Signing in..." : "Sign In"}</Btn>
       </div>
       <p className="text-center text-xs text-slate-600 mt-5">
         Don&apos;t have an account?{" "}

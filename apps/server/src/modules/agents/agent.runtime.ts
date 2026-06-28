@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AiService } from '../ai/ai.service';
+import { ReflectionService } from '../reflection/reflection.service';
 import { AgentSkill, SkillInput } from './skills/skill.interface';
 import { BrandAnalysisSkill } from './skills/brand-analysis.skill';
 import { ContentGenerationSkill } from './skills/content-generation.skill';
@@ -22,6 +23,7 @@ export class AgentRuntime {
 
   constructor(
     private readonly aiService: AiService,
+    private readonly reflectionService: ReflectionService,
     private readonly brandAnalysisSkill: BrandAnalysisSkill,
     private readonly contentGenerationSkill: ContentGenerationSkill,
   ) {
@@ -73,14 +75,30 @@ export class AgentRuntime {
       temperature: agent.temperature,
     });
 
+    const executionTimeMs = Date.now() - startTime;
+
+    let reflection = null;
+    try {
+      reflection = await this.reflectionService.evaluate(
+        `${agent.id}-${Date.now()}`,
+        input.input,
+        output,
+        0,
+        agent.skills,
+      );
+    } catch {
+      // reflection is best-effort
+    }
+
     return {
       agentId: agent.id,
       agentName: agent.name,
       input: input.input,
       output,
       skillResults,
-      executionTimeMs: Date.now() - startTime,
+      executionTimeMs,
       model: agent.model,
+      reflection,
     };
   }
 }

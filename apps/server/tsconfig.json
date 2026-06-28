@@ -29,7 +29,8 @@
       "@nexora/security": ["../../packages/security/src"],
       "@nexora/marketplace": ["../../packages/marketplace/src"],
       "@nexora/creator": ["../../packages/creator/src"],
-      "@nexora/lms": ["../../packages/lms/src"]
+      "@nexora/lms": ["../../packages/lms/src"],
+      "@nexora/search": ["../../packages/search/src"]
     }
   },
   "include": ["src/**/*"]

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Rocket, Play, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Rocket, Play, Check, ChevronLeft, ChevronRight, Plus, Minus } from "lucide-react";
 import { Btn, Badge } from "../components/shared";
 import { BrandIcon } from "../components/ui/brand-icon";
 import type { Screen } from "../types";
@@ -15,6 +15,15 @@ const pageAnim = {
 export default function LandingPage({ navigate }: { navigate: (s: Screen) => void }) {
   const [activeFeature, setActiveFeature] = useState(0);
   const [demoStep, setDemoStep] = useState(0);
+  const [selectedApps, setSelectedApps] = useState(["slack", "jira", "drive"]);
+  const [userCount, setUserCount] = useState(500);
+
+  const APP_COSTS: Record<string, number> = { slack: 9, teams: 6, drive: 13, salesforce: 25, hubspot: 18, jira: 8, notion: 10, asana: 11, trello: 5, monday: 16, loom: 12, linear: 8 };
+  const APP_ICONS: Record<string, string> = { slack: "💬", teams: "🎥", drive: "☁️", salesforce: "🔵", hubspot: "🟠", jira: "🔷", notion: "📝", asana: "🎯", trello: "📋", monday: "📊", loom: "▶️", linear: "⚡" };
+  const totalAppCost = selectedApps.reduce((s, id) => s + (APP_COSTS[id] || 0), 0) * userCount * 12;
+  const clickUpTotal = 12 * userCount * 12;
+  const savings = totalAppCost - clickUpTotal;
+  const toggleApp = (id: string) => setSelectedApps(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]);
   const features = [
     { title: "Brand Studio", desc: "Complete AI-powered brand identity system", img: "/3d-icons/painting-dynamic-premium.png" },
     { title: "Website Builder", desc: "Launch stunning websites in minutes", img: "/3d-icons/computer-dynamic-premium.png" },
@@ -50,7 +59,7 @@ export default function LandingPage({ navigate }: { navigate: (s: Screen) => voi
             <img src="/logo-horizontal.svg" alt="NEXORA" className="h-12 w-auto" />
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm text-slate-400">
-            {[{ label: "Product", screen: "brand-studio" as Screen }, { label: "Templates", screen: "templates" as Screen }, { label: "Pricing", screen: "signup" as Screen }, { label: "Company", screen: "help" as Screen }].map((n) => (
+            {[{ label: "Product", screen: "brand-studio" as Screen }, { label: "Templates", screen: "templates" as Screen }, { label: "Pricing", screen: "pricing" as Screen }, { label: "Company", screen: "help" as Screen }].map((n) => (
               <button key={n.label} onClick={() => navigate(n.screen)} className="hover:text-white transition-colors cursor-pointer">{n.label}</button>
             ))}
           </nav>
@@ -294,6 +303,84 @@ export default function LandingPage({ navigate }: { navigate: (s: Screen) => voi
                 </motion.div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Cost Savings Calculator ── */}
+      <section className="py-24 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/5 via-indigo-900/5 to-purple-900/5" />
+        <div className="max-w-5xl mx-auto relative z-10">
+          <div className="text-center mb-12">
+            <Badge color="blue">Cost Calculator</Badge>
+            <h2 className="text-4xl font-bold mt-4 mb-3">See How Much You Save</h2>
+            <p className="text-slate-500">Compare your current tool stack against our all-in-one platform.</p>
+          </div>
+
+          <div className="rounded-3xl p-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 shadow-xl shadow-indigo-900/20">
+            <div className="flex flex-col md:flex-row gap-1 bg-transparent">
+              <div className="flex-1 bg-card rounded-2xl p-6">
+                <h3 className="text-white font-medium mb-5">Which apps do you use?</h3>
+                <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 mb-6">
+                  {Object.entries(APP_ICONS).map(([id, icon]) => {
+                    const isSelected = selectedApps.includes(id);
+                    return (
+                      <button key={id} onClick={() => toggleApp(id)}
+                        className={`aspect-square flex items-center justify-center rounded-xl border-2 transition-all text-lg ${
+                          isSelected ? "border-violet-500 bg-violet-500/10" : "border-white/[0.06] hover:border-white/20"
+                        }`}
+                      >
+                        {icon}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="pt-4 border-t border-white/[0.06]">
+                  <label className="text-slate-300 text-sm font-medium mb-3 block">How many people at your company?</label>
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => setUserCount(Math.max(1, userCount - 10))} className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/[0.06] hover:bg-white/[0.1] text-slate-400"><Minus size={16} /></button>
+                    <input type="number" value={userCount} onChange={e => setUserCount(Math.max(1, parseInt(e.target.value) || 0))}
+                      className="w-24 h-10 text-center text-lg font-bold bg-white/[0.04] border border-white/[0.1] rounded-lg text-white focus:border-violet-500 focus:outline-none" />
+                    <button onClick={() => setUserCount(userCount + 10)} className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/[0.06] hover:bg-white/[0.1] text-slate-400"><Plus size={16} /></button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-1 bg-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-baseline mb-4">
+                    <h3 className="text-white font-medium">Apps to replace</h3>
+                    <span className="text-xs text-slate-500">for <span className="text-white font-bold">{userCount.toLocaleString()}</span> users</span>
+                  </div>
+                  <div className="space-y-2 mb-4">
+                    {selectedApps.map(id => (
+                      <div key={id} className="flex items-center justify-between text-sm text-slate-400 py-1.5">
+                        <span>{APP_ICONS[id]} {id.charAt(0).toUpperCase() + id.slice(1)}</span>
+                        <span className="text-white font-medium">${APP_COSTS[id]}/user</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="border-t border-white/[0.06] pt-3 flex justify-between font-bold text-white">
+                    <span>TOTAL</span>
+                    <span>${totalAppCost.toLocaleString()}/yr</span>
+                  </div>
+                  <div className="border-t border-dashed border-white/[0.06] mt-3 pt-3 text-sm text-slate-500">
+                    Our platform for {userCount.toLocaleString()} users = <span className="text-white font-semibold">${clickUpTotal.toLocaleString()}/yr</span>
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <div className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-2">
+                    Save ${Math.max(0, savings).toLocaleString()}/yr
+                  </div>
+                  <p className="text-slate-500 text-xs leading-relaxed mb-4">
+                    Switch to our platform and save a {userCount.toLocaleString()}-person company ${Math.max(0, savings).toLocaleString()} per year.
+                  </p>
+                  <Btn variant="primary" className="w-full justify-center" onClick={() => navigate("signup")}>
+                    Start saving today <ChevronRight size={14} />
+                  </Btn>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

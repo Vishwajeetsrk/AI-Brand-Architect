@@ -1,8 +1,8 @@
 import { LLMProvider, LLMMessage, LLMResponse, GenerateOptions, LLMProviderType } from '../types';
 
 export class OpenAIProvider implements LLMProvider {
-  private apiKey: string;
-  private baseUrl: string;
+  protected apiKey: string;
+  protected baseUrl: string;
   readonly providerType: LLMProviderType;
 
   constructor(apiKey: string, baseUrl: string = 'https://api.openai.com/v1') {
@@ -101,7 +101,7 @@ export class OpenAIProvider implements LLMProvider {
     return data.data?.[0]?.embedding || [];
   }
 
-  private getHeaders(): Record<string, string> {
+  protected getHeaders(): Record<string, string> {
     return {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.apiKey}`,

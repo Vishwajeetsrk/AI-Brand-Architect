@@ -90,6 +90,13 @@ export interface AgentMessage {
   ttl?: number;
 }
 
+export interface EvaluationDimension {
+  name: string;
+  score: number;
+  weight: number;
+  details?: string;
+}
+
 export interface ReflectionResult {
   taskId: string;
   evaluation: {
@@ -97,11 +104,21 @@ export interface ReflectionResult {
     passed: boolean;
     issues: string[];
     improvements: string[];
+    dimensions?: EvaluationDimension[];
   };
   confidence: number;
   needsRetry: boolean;
   retryCount: number;
   suggestedChanges?: string;
+  timestamp: number;
+}
+
+export interface FeedbackRecord {
+  taskId: string;
+  predictedScore: number;
+  actualScore: number;
+  userFeedback?: string;
+  corrected: boolean;
   timestamp: number;
 }
 

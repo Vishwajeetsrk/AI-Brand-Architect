@@ -48,11 +48,13 @@ export const screenToRoute: Record<string, string> = {
   "api-keys": "/dashboard/api-keys",
   profile: "/dashboard/profile",
   "mission-control": "/dashboard/mission-control",
+  "ai-monitoring": "/dashboard/ai-monitoring",
   terms: "/legal/terms",
   privacy: "/legal/privacy",
   cookie: "/legal/cookie",
   license: "/legal/license",
   "404": "/404",
+  pricing: "/pricing",
   maintenance: "/maintenance",
 };
 

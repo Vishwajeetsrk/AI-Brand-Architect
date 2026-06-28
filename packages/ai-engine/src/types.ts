@@ -1,4 +1,41 @@
-export type LLMProviderType = 'openai' | 'anthropic' | 'google' | 'deepseek' | 'mistral' | 'custom';
+export type LLMProviderType =
+  | 'openai' | 'anthropic' | 'google' | 'deepseek' | 'mistral'
+  | 'openrouter' | 'groq' | 'cohere' | 'xai' | 'ollama'
+  | 'lmstudio' | 'glm' | 'huggingface' | 'azure' | 'bedrock'
+  | 'vertex' | 'together' | 'perplexity' | 'custom';
+
+export type RoutingStrategy =
+  | 'cost' | 'quality' | 'latency' | 'capability'
+  | 'fallback' | 'hybrid' | 'consensus' | 'manual';
+
+export interface ModelCapabilities {
+  reasoning: boolean;
+  coding: boolean;
+  vision: boolean;
+  functionCalling: boolean;
+  streaming: boolean;
+  embeddings: boolean;
+  jsonMode: boolean;
+}
+
+export interface ModelPricing {
+  inputPerMillionTokens: number;
+  outputPerMillionTokens: number;
+  currency: string;
+}
+
+export interface ModelInfo {
+  id: string;
+  provider: LLMProviderType;
+  displayName: string;
+  capabilities: ModelCapabilities;
+  pricing: ModelPricing;
+  contextWindow: number;
+  maxOutputTokens: number;
+  typicalLatencyMs: number;
+  qualityScore: number;
+  isDefault?: boolean;
+}
 
 export interface LLMConfig {
   provider: LLMProviderType;
@@ -18,6 +55,9 @@ export interface GenerateOptions {
   stop?: string[];
   systemPrompt?: string;
   stream?: boolean;
+  userId?: string;
+  tags?: string[];
+  maxRetries?: number;
 }
 
 export interface LLMMessage {
@@ -37,6 +77,18 @@ export interface LLMResponse {
     totalTokens: number;
   };
   finishReason?: string;
+  latencyMs?: number;
+  cost?: number;
+}
+
+export interface RoutingPreference {
+  strategy: RoutingStrategy;
+  maxCost?: number;
+  minQuality?: number;
+  maxLatencyMs?: number;
+  requiredCapabilities?: (keyof ModelCapabilities)[];
+  preferredProviders?: LLMProviderType[];
+  fallbackModels?: string[];
 }
 
 export interface LLMProvider {

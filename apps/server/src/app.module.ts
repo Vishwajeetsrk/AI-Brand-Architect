@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from './modules/cqrs/cqrs.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { BrandsModule } from './modules/brands/brands.module';
@@ -18,9 +19,20 @@ import { AutomationModule } from './modules/automation/automation.module';
 import { CrmModule } from './modules/crm/crm.module';
 import { CreatorModule } from './modules/creator/creator.module';
 import { LmsModule } from './modules/lms/lms.module';
+import { KnowledgeGraphModule } from './modules/knowledge-graph/knowledge-graph.module';
+import { MemoryEngineModule } from './modules/memory-engine/memory-engine.module';
+import { RealtimeModule } from './modules/realtime/realtime.module';
+import { JobsModule } from './modules/jobs/jobs.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ConversationsModule } from './modules/conversations/conversations.module';
+import { SearchModule } from './modules/search/search.module';
+import { ReflectionModule } from './modules/reflection/reflection.module';
+import { PlannerModule } from './modules/planner/planner.module';
+import { AiMonitoringModule } from './modules/ai-monitoring/ai-monitoring.module';
 
 @Module({
   imports: [
+    CqrsModule,
     AuthModule,
     UsersModule,
     BrandsModule,
@@ -40,6 +52,16 @@ import { LmsModule } from './modules/lms/lms.module';
     SecurityModule,
     CreatorModule,
     LmsModule,
+    KnowledgeGraphModule,
+    MemoryEngineModule,
+    RealtimeModule,
+    JobsModule,
+    NotificationsModule,
+    ConversationsModule,
+    SearchModule,
+    ReflectionModule,
+    PlannerModule,
+    AiMonitoringModule,
   ],
 })
 export class AppModule {}

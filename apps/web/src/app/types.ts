@@ -8,12 +8,13 @@ export type Screen =
   | "analytics" | "integrations" | "settings" | "billing" | "api-keys"
   | "notifications" | "profile" | "help" | "docs" | "changelog"
   | "mcp-tools" | "knowledge-hub" | "cms-dashboard" | "mission-control" | "marketplace" | "security"
+  | "ai-monitoring"
   | "collaboration"
   | "automation"
   | "lms"
   | "crm"
   | "creator"
-  | "terms" | "privacy" | "cookie" | "license" | "404" | "maintenance";
+  | "pricing" | "terms" | "privacy" | "cookie" | "license" | "404" | "maintenance";
 
 export interface NavItem { id: Screen; label: string; icon: React.ElementType; badge?: string }
 export interface NavSection { label: string; items: NavItem[] }

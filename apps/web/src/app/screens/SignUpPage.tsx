@@ -4,12 +4,28 @@ import { User, AtSign, Lock } from "lucide-react";
 import { Btn, Input } from "../components/shared";
 import { BrandIcon } from "../components/ui/brand-icon";
 import AuthCard from "./AuthCard";
+import { useAuth } from "../../hooks/useAuth";
 import type { Screen } from "../types";
 
 export default function SignUpPage({ navigate }: { navigate: (s: Screen) => void }) {
+  const { register, isLoading } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    setError("");
+    if (!name || !email || !pass) { setError("Please fill in all fields"); return; }
+    if (pass.length < 8) { setError("Password must be at least 8 characters"); return; }
+    try {
+      await register(email, pass, name);
+      navigate("verify");
+    } catch (e: any) {
+      setError(e.message || "Registration failed");
+    }
+  };
+
   const socials = [
     { name: "Continue with Google", brand: "Google", color: "from-red-500/20 to-orange-500/10" },
     { name: "Continue with GitHub", brand: "GitHub", color: "from-slate-600/20 to-slate-500/10" },
@@ -41,12 +57,13 @@ export default function SignUpPage({ navigate }: { navigate: (s: Screen) => void
           </div>
         ))}
       </div>
+      {error && <p className="text-xs text-red-400 mb-4">{error}</p>}
       <p className="text-xs text-slate-600 mb-4">
         By creating an account, you agree to our{" "}
         <button onClick={() => navigate("terms")} className="text-violet-400">Terms of Service</button> and{" "}
         <button onClick={() => navigate("privacy")} className="text-violet-400">Privacy Policy</button>.
       </p>
-      <Btn variant="primary" className="w-full justify-center" size="lg" onClick={() => navigate("verify")}>Create Account</Btn>
+      <Btn variant="primary" className="w-full justify-center" size="lg" onClick={handleSubmit} disabled={isLoading}>{isLoading ? "Creating account..." : "Create Account"}</Btn>
       <p className="text-center text-xs text-slate-600 mt-5">
         Already have an account?{" "}
         <button onClick={() => navigate("signin")} className="text-violet-400 font-semibold">Sign in</button>

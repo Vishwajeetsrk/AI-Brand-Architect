@@ -50,13 +50,14 @@ export class PlannerEngine {
 
     const planId = crypto.randomUUID();
     const tasks = await this.decomposeGoal(goal, availableCapabilities);
+    const strategy = this.determineStrategy(tasks);
 
     const plan: AgentTaskPlan = {
       id: planId,
       goalId: goal.id,
       goal: goal.description,
       tasks,
-      strategy: this.determineStrategy(tasks),
+      strategy,
       status: 'pending',
       createdAt: Date.now(),
     };
@@ -66,12 +67,56 @@ export class PlannerEngine {
     return plan;
   }
 
+  async replan(planId: string, failedTaskId: string, error: string, availableCapabilities: string[]): Promise<AgentTaskPlan> {
+    const plan = this.plans.get(planId);
+    if (!plan) throw new Error(`Plan not found: ${planId}`);
+
+    const failedIdx = plan.tasks.findIndex(t => t.id === failedTaskId);
+    if (failedIdx === -1) throw new Error(`Task not found: ${failedTaskId}`);
+
+    const completed = plan.tasks.slice(0, failedIdx).filter(t => t.status === 'completed');
+    const remaining = plan.tasks.slice(failedIdx).map(t => ({
+      ...t,
+      status: 'pending' as const,
+      retryCount: t.id === failedTaskId ? t.retryCount + 1 : t.retryCount,
+      error: t.id === failedTaskId ? error : undefined,
+    }));
+
+    const goal = this.goals.get(plan.goalId);
+    let newTasks: AgentTaskDef[] = [];
+    if (goal && remaining.length > 0 && remaining[0].retryCount <= remaining[0].maxRetries) {
+      const goalDesc = goal.description;
+      newTasks = this.generateAlternativeTasks(remaining[0], goalDesc, availableCapabilities);
+    }
+
+    const finalTasks = [...completed, ...(newTasks.length > 0 ? newTasks : remaining)];
+    plan.tasks = finalTasks;
+    plan.status = 'running';
+    plan.metadata = {
+      ...(plan.metadata || {}),
+      replanAt: Date.now(),
+      replannedFrom: failedTaskId,
+      replanReason: error,
+    };
+
+    this.plans.set(planId, plan);
+    return plan;
+  }
+
   getPlan(planId: string): AgentTaskPlan | undefined {
     return this.plans.get(planId);
   }
 
   getGoal(goalId: string): AgentGoal | undefined {
     return this.goals.get(goalId);
+  }
+
+  getAllGoals(): AgentGoal[] {
+    return Array.from(this.goals.values());
+  }
+
+  getAllPlans(): AgentTaskPlan[] {
+    return Array.from(this.plans.values());
   }
 
   updatePlanStatus(planId: string, status: AgentTaskDef['status']): void {
@@ -88,7 +133,7 @@ export class PlannerEngine {
 
   getNextReadyTasks(planId: string): AgentTaskDef[] {
     const plan = this.plans.get(planId);
-    if (!plan || plan.status !== 'pending' && plan.status !== 'running') return [];
+    if (!plan || (plan.status !== 'pending' && plan.status !== 'running')) return [];
 
     const completed = new Set(plan.tasks.filter(t => t.status === 'completed').map(t => t.id));
 
@@ -102,6 +147,95 @@ export class PlannerEngine {
     const plan = this.plans.get(planId);
     if (!plan) return false;
     return plan.tasks.every(t => t.status === 'completed' || t.status === 'failed' || t.status === 'cancelled');
+  }
+
+  getExecutionTree(planId: string): any {
+    const plan = this.plans.get(planId);
+    if (!plan) return null;
+
+    const buildTree = (taskId: string, visited: Set<string> = new Set()): any => {
+      if (visited.has(taskId)) return { id: taskId, circular: true };
+      visited.add(taskId);
+
+      const task = plan!.tasks.find(t => t.id === taskId);
+      if (!task) return { id: taskId, notFound: true };
+
+      return {
+        id: task.id,
+        description: task.description,
+        status: task.status,
+        priority: task.priority,
+        estimatedComplexity: task.estimatedComplexity,
+        dependencies: task.dependencies.map(dep => buildTree(dep, new Set(visited))),
+      };
+    };
+
+    const roots = plan.tasks.filter(t => t.dependencies.length === 0);
+    return {
+      planId: plan.id,
+      goal: plan.goal,
+      strategy: plan.strategy,
+      status: plan.status,
+      rootTasks: roots.map(r => buildTree(r.id)),
+      stats: {
+        total: plan.tasks.length,
+        completed: plan.tasks.filter(t => t.status === 'completed').length,
+        failed: plan.tasks.filter(t => t.status === 'failed').length,
+        running: plan.tasks.filter(t => t.status === 'running').length,
+        pending: plan.tasks.filter(t => t.status === 'pending').length,
+      },
+    };
+  }
+
+  toPrismaGoalData(goal: AgentGoal): Record<string, any> {
+    return {
+      description: goal.description,
+      priority: goal.priority,
+      deadline: goal.deadline ? new Date(goal.deadline) : undefined,
+      constraints: goal.constraints || [],
+      successCriteria: goal.successCriteria || [],
+      context: goal.context || undefined,
+      status: goal.status.toUpperCase(),
+      parentGoalId: goal.parentGoalId || undefined,
+    };
+  }
+
+  toPrismaTaskData(task: AgentTaskDef, goalId: string, userId: string): Record<string, any> {
+    return {
+      description: task.description,
+      goalId,
+      assignedAgentId: task.assignedAgentId || undefined,
+      assignedAgentRole: task.assignedAgentRole?.toUpperCase() || undefined,
+      priority: task.priority,
+      dependencies: task.dependencies,
+      estimatedComplexity: task.estimatedComplexity,
+      requiredCapabilities: task.requiredCapabilities,
+      status: task.status.toUpperCase(),
+      result: task.result || undefined,
+      error: task.error || undefined,
+      retryCount: task.retryCount,
+      maxRetries: task.maxRetries,
+      metadata: task.metadata || undefined,
+      userId,
+    };
+  }
+
+  private generateAlternativeTasks(failedTask: AgentTaskDef, goalDescription: string, capabilities: string[]): AgentTaskDef[] {
+    const tasks: AgentTaskDef[] = [];
+    const isCreative = capabilities.some(c => c.includes('creative') || c.includes('generate'));
+    const isAnalytical = capabilities.some(c => c.includes('analysis') || c.includes('research'));
+
+    if (isAnalytical) {
+      tasks.push(this.makeTask(0, `Re-analyze: ${failedTask.description} (alternative approach)`, ['research', 'analysis'], 70));
+    }
+    if (isCreative) {
+      tasks.push(this.makeTask(1, `Generate revised output for: ${goalDescription}`, ['creative', 'content_generation'], 60, tasks.length > 0 ? [tasks[tasks.length - 1].id] : []));
+    }
+    if (tasks.length === 0) {
+      tasks.push(this.makeTask(0, `Retry: ${failedTask.description}`, capabilities.slice(0, 3), 50));
+    }
+
+    return tasks;
   }
 
   private async decomposeGoal(goal: AgentGoal, availableCapabilities: string[]): Promise<AgentTaskDef[]> {
@@ -150,6 +284,20 @@ export class PlannerEngine {
       tasks.push(this.makeTask(tasks.length, 'Plan creation approach', ['planning'], 60));
       tasks.push(this.makeTask(tasks.length, 'Generate initial draft', ['content_generation', 'creative'], 50, [tasks[tasks.length - 1].id]));
       tasks.push(this.makeTask(tasks.length, 'Review and refine output', ['evaluation', 'editing'], 40, [tasks[tasks.length - 1].id]));
+    }
+
+    if (desc.includes('build') || desc.includes('develop') || desc.includes('implement')) {
+      tasks.push(this.makeTask(tasks.length, 'Design architecture and plan implementation', ['planning', 'architecture'], 75));
+      tasks.push(this.makeTask(tasks.length, 'Build core components', ['development', 'implementation'], 65, [tasks[tasks.length - 1].id]));
+      tasks.push(this.makeTask(tasks.length, 'Test and validate implementation', ['testing', 'evaluation'], 55, [tasks[tasks.length - 1].id]));
+      tasks.push(this.makeTask(tasks.length, 'Deploy and document', ['devops', 'documentation'], 45, [tasks[tasks.length - 1].id]));
+    }
+
+    if (desc.includes('optimize') || desc.includes('improve') || desc.includes('refactor')) {
+      tasks.push(this.makeTask(tasks.length, 'Audit current state and identify bottlenecks', ['analysis', 'audit'], 80));
+      tasks.push(this.makeTask(tasks.length, 'Develop optimization plan', ['planning'], 70, [tasks[tasks.length - 1].id]));
+      tasks.push(this.makeTask(tasks.length, 'Implement optimizations', ['development', 'implementation'], 60, [tasks[tasks.length - 1].id]));
+      tasks.push(this.makeTask(tasks.length, 'Measure and verify improvements', ['analysis', 'testing'], 50, [tasks[tasks.length - 1].id]));
     }
 
     if (tasks.length === 0) {

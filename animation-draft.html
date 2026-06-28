@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Brand Architect — Cinematic Showcase</title>
+<style>
+/* ── Base ───────────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'Times New Roman', Georgia, serif;
+  overflow: hidden;
+}
+
+.viewport {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  background: #051810;
+  transform-origin: center center;
+  overflow: hidden;
+  box-shadow: 0 0 100px rgba(0,0,0,0.8);
+}
+
+/* ── Utility ────────────────────────────────────────────────────────── */
+@keyframes none { to { } }
+
+/* ── Cursor ──────────────────────────────────────────────────────────── */
+.cursor {
+  position: absolute;
+  width: 24px; height: 24px;
+  pointer-events: none;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+.cursor-inner {
+  width: 100%; height: 100%;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  position: absolute;
+  transition: transform 0.15s ease;
+}
+.cursor-dot {
+  width: 4px; height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgba(160,32,240,0.3);
+  border-radius: 50%;
+  animation: cursor-ring-pulse 2s ease-in-out infinite;
+}
+@keyframes cursor-ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ── Master Timeline: scene visibility ──────────────────────────────── */
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+/* Scene 1: 0s–3s, Scene 2: 3s–7s, Scene 3: 7s–12s, Scene 4: 12s–17s,
+   Scene 5: 17s–22s, Scene 6: 22s–27s, Scene 7: 27s–30s, Scene 8: 30s–32s */
+
+.scene-1 { animation-name: scene-1-vis; animation-duration: 3s; animation-delay: 0s; }
+.scene-2 { animation-name: scene-2-vis; animation-duration: 4s; animation-delay: 3s; }
+.scene-3 { animation-name: scene-3-vis; animation-duration: 5s; animation-delay: 7s; }
+.scene-4 { animation-name: scene-4-vis; animation-duration: 5s; animation-delay: 12s; }
+.scene-5 { animation-name: scene-5-vis; animation-duration: 5s; animation-delay: 17s; }
+.scene-6 { animation-name: scene-6-vis; animation-duration: 5s; animation-delay: 22s; }
+.scene-7 { animation-name: scene-7-vis; animation-duration: 3s; animation-delay: 27s; }
+.scene-8 { animation-name: scene-8-vis; animation-duration: 2s; animation-delay: 30s; }
+
+@keyframes scene-1-vis { 0% { opacity: 0; } 4% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes scene-2-vis { 0% { opacity: 0; } 5% { opacity: 1; } 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes scene-3-vis { 0% { opacity: 0; } 3% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes scene-4-vis { 0% { opacity: 0; } 3% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes scene-5-vis { 0% { opacity: 0; } 3% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes scene-6-vis { 0% { opacity: 0; } 3% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes scene-7-vis { 0% { opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes scene-8-vis { 0% { opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ── Scene 1: Brand + Dock ──────────────────────────────────────────── */
+
+.s1-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.08);
+  font-size: 64px;
+  letter-spacing: 0.2em;
+  font-weight: 200;
+  animation: s1-logo-move 3s 0s ease-in-out both;
+}
+@keyframes s1-logo-move {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); color: rgba(255,255,255,0); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1); color: rgba(255,255,255,0.15); }
+  50% { opacity: 1; transform: translate(calc(-50vw + 100px), calc(-50vh + 60px)) scale(0.35); color: rgba(255,255,255,0.08); }
+  100% { opacity: 0; }
+}
+
+.s1-dock {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  display: flex;
+  gap: 12px;
+  padding: 12px 24px;
+  background: rgba(20,20,20,0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 40px 40px 0 0;
+  border: 1px solid rgba(255,255,255,0.06);
+  animation: s1-dock-up 3s 0s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes s1-dock-up {
+  0% { transform: translateX(-50%) translateY(100%); }
+  50% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+.s1-dock-item {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  animation: s1-dock-item-in 0.6s var(--delay) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.s1-dock-item:nth-child(1) { --delay: 1.6s; }
+.s1-dock-item:nth-child(2) { --delay: 1.68s; }
+.s1-dock-item:nth-child(3) { --delay: 1.76s; }
+.s1-dock-item:nth-child(4) { --delay: 1.84s; }
+.s1-dock-item:nth-child(5) { --delay: 1.92s; }
+.s1-dock-item:nth-child(6) { --delay: 2.0s; }
+.s1-dock-item:nth-child(7) { --delay: 2.08s; }
+.s1-dock-item:nth-child(8) { --delay: 2.16s; }
+
+@keyframes s1-dock-item-in {
+  0% { opacity: 0; transform: scale(0) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Scene 2: Interactive Folder ────────────────────────────────────── */
+
+.s2-folder-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(2);
+}
+.s2-folder {
+  position: relative;
+  width: 140px; height: 110px;
+  cursor: pointer;
+}
+.s2-folder-back {
+  width: 140px; height: 110px;
+  background: #3a1f8a;
+  border-radius: 0 16px 16px 16px;
+  position: relative;
+  box-shadow: 0 10px 30px -5px rgba(0,0,0,0.3);
+}
+.s2-folder-tab {
+  position: absolute;
+  bottom: 100%; left: 0;
+  width: 45px; height: 15px;
+  background: #3a1f8a;
+  border-radius: 8px 8px 0 0;
+}
+.s2-paper {
+  position: absolute;
+  left: 50%;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: rgba(0,0,0,0.15);
+}
+.s2-paper-1 {
+  width: 90px; height: 80px;
+  background: #e6e6e6;
+  z-index: 22;
+  animation: s2-paper-out1 4s 3.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.s2-paper-2 {
+  width: 100px; height: 85px;
+  background: #f0f0f0;
+  z-index: 21;
+  animation: s2-paper-out2 4s 3.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.s2-paper-3 {
+  width: 110px; height: 90px;
+  background: #ffffff;
+  z-index: 20;
+  animation: s2-paper-out3 4s 3.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes s2-paper-out1 {
+  0% { transform: translate(-50%, 10%) rotate(0); opacity: 0; }
+  20% { transform: translate(-120%, -75%) rotate(-15deg); opacity: 1; }
+  100% { transform: translate(-120%, -75%) rotate(-15deg); opacity: 1; }
+}
+@keyframes s2-paper-out2 {
+  0% { transform: translate(-50%, 10%) rotate(0); opacity: 0; }
+  20% { transform: translate(10%, -75%) rotate(15deg); opacity: 1; }
+  100% { transform: translate(10%, -75%) rotate(15deg); opacity: 1; }
+}
+@keyframes s2-paper-out3 {
+  0% { transform: translate(-50%, 10%) rotate(0); opacity: 0; }
+  20% { transform: translate(-50%, -105%) rotate(5deg); opacity: 1; }
+  100% { transform: translate(-50%, -105%) rotate(5deg); opacity: 1; }
+}
+
+.s2-flap-left {
+  position: absolute; inset: 0;
+  background: #5227FF;
+  border-radius: 6px 12px 12px 12px;
+  clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+  z-index: 30;
+  transform-origin: bottom;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.s2-flap-right {
+  position: absolute; inset: 0;
+  background: #5227FF;
+  border-radius: 6px 12px 12px 12px;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+  z-index: 30;
+  transform-origin: bottom;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.s2-flap-label {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.85);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-family: 'Times New Roman', serif;
+  white-space: nowrap;
+}
+
+.s2-folder:hover .s2-flap-left { transform: skewX(15deg) scaleY(0.6) translateY(4px); }
+.s2-folder:hover .s2-flap-right { transform: skewX(-15deg) scaleY(0.6) translateY(4px); }
+
+/* Scene 2 ambient glow */
+.s2-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82,39,255,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: s2-glow-pulse 2s ease-in-out infinite;
+}
+@keyframes s2-glow-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+}
+
+/* ── Scene 3: Pricing Section ───────────────────────────────────────── */
+
+.s3-bg {
+  position: absolute; inset: 0;
+  background: #FAF9F6;
+}
+
+.s3-header {
+  position: absolute;
+  top: 80px; left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  animation: s3-header-in 5s 7.5s ease-out both;
+}
+@keyframes s3-header-in {
+  0% { opacity: 0; transform: translateX(-50%) translateY(30px); }
+  30% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.s3-header-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; color: #65a30d; font-family: sans-serif;
+  margin-bottom: 16px;
+}
+.s3-header-label span {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #65a30d;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px;
+}
+.s3-header h1 {
+  font-family: 'Times New Roman', Georgia, serif;
+  font-size: 58px; color: #1a1a1a;
+  line-height: 1.1; letter-spacing: -0.02em;
+}
+.s3-header h1 em {
+  color: #A020F0; font-style: italic;
+}
+
+.s3-cards {
+  position: absolute;
+  top: 380px; left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 1200px;
+}
+
+.s3-card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  font-family: sans-serif;
+  opacity: 0;
+  transform: translateY(60px);
+}
+.s3-card-1 { animation: s3-card-in 0.8s 8.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.s3-card-2 { animation: s3-card-in 0.8s 8.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.s3-card-3 { animation: s3-card-in 0.8s 8.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes s3-card-in {
+  0% { opacity: 0; transform: translateY(60px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.s3-card-gradient {
+  position: absolute; top: 0; left: 0; right: 0; height: 80px;
+  opacity: 0.4;
+}
+.s3-card .icon { font-size: 28px; margin-bottom: 24px; }
+.s3-card h3 { font-family: 'Times New Roman', serif; font-size: 28px; color: #1a1a1a; margin-bottom: 8px; }
+.s3-card .desc { color: #888; font-size: 13px; margin-bottom: 24px; }
+.s3-card .price { font-size: 22px; color: #1a1a1a; font-weight: 500; margin-bottom: 24px; }
+.s3-card button {
+  width: 100%; padding: 12px; border-radius: 6px;
+  border: none; font-size: 13px; font-weight: 500;
+  cursor: pointer; margin-bottom: 32px;
+  font-family: sans-serif;
+}
+.s3-card .btn-primary { background: #4a4a4a; color: #fff; }
+.s3-card .btn-secondary { background: #f5f5f5; color: #1a1a1a; border: 1px solid #ddd; }
+
+.s3-badge {
+  position: absolute; top: 20px; right: 20px;
+  background: #d9f99d; color: #3f6212;
+  font-size: 11px; padding: 4px 12px; border-radius: 20px;
+  font-weight: 500;
+  animation: s3-badge-glow 2s 9.5s ease-in-out infinite;
+}
+@keyframes s3-badge-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217,249,157,0.3); }
+  50% { box-shadow: 0 0 20px 5px rgba(217,249,157,0.15); }
+}
+
+.s3-feature-list { list-style: none; }
+.s3-feature-list li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: #555; padding: 6px 0;
+}
+.s3-feature-list li::before {
+  content: '✓';
+  color: #22c55e;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Camera pan */
+.s3-pan {
+  position: absolute; inset: 0;
+  animation: s3-pan 5s 7s ease-in-out both;
+}
+@keyframes s3-pan {
+  0%, 100% { transform: translateX(0); }
+  40% { transform: translateX(-40px); }
+  60% { transform: translateX(40px); }
+}
+
+/* ── Scene 4: Comparison Table ──────────────────────────────────────── */
+
+.s4-container {
+  position: absolute; inset: 0;
+  background: #fff;
+  font-family: sans-serif;
+  padding: 60px 80px;
+}
+
+.s4-header {
+  display: grid;
+  grid-template-columns: 300px 1fr 1fr 1fr;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 32px;
+}
+.s4-plan-name { font-size: 16px; font-weight: 600; color: #111; text-align: center; }
+.s4-plan-btn {
+  display: block; margin: 8px auto 0;
+  padding: 8px 20px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; border: none; cursor: pointer;
+  font-family: sans-serif;
+}
+.s4-plan-btn.solid { background: #111; color: #fff; }
+.s4-plan-btn.outline { background: #fff; color: #111; border: 1px solid #ddd; }
+
+.s4-section {
+  margin-bottom: 40px;
+  animation: s4-section-in 5s 12.3s ease-out both;
+}
+.s4-section-2 { animation-delay: 13s; }
+
+@keyframes s4-section-in {
+  0% { opacity: 0; transform: translateY(20px); }
+  30% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.s4-section-title {
+  font-size: 20px; font-weight: 700; color: #111;
+  font-family: 'Times New Roman', serif;
+  margin-bottom: 16px; padding: 0 16px;
+}
+
+.s4-row {
+  display: grid;
+  grid-template-columns: 300px 1fr 1fr 1fr;
+  gap: 16px;
+  padding: 14px 16px;
+  align-items: center;
+  transition: background 0.2s;
+}
+.s4-row:nth-child(odd) { background: #fafafa; }
+.s4-row:nth-child(even) { background: #fff; }
+
+.s4-row-name {
+  font-size: 13px; color: #444; font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+}
+.s4-row-name .info {
+  width: 14px; height: 14px; display: inline-flex;
+  align-items: center; justify-content: center;
+  font-size: 9px; color: #aaa; border: 1px solid #ccc; border-radius: 50%;
+  cursor: help;
+}
+
+.s4-row-cell {
+  text-align: center;
+  font-size: 13px; color: #555;
+}
+
+.s4-check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  border: 1.5px solid #22c55e; border-radius: 50%;
+  color: #22c55e; font-size: 14px; font-weight: bold;
+}
+.s4-cross {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  border: 1.5px solid #ddd; border-radius: 50%;
+  color: #aaa; font-size: 14px;
+}
+
+.s4-footer {
+  position: absolute;
+  bottom: 60px; left: 80px; right: 80px;
+  background: #111; border-radius: 16px;
+  padding: 40px; text-align: center;
+  color: #fff;
+  animation: s4-footer-in 5s 14s ease-out both;
+}
+@keyframes s4-footer-in {
+  0% { opacity: 0; transform: translateY(30px); }
+  40% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.s4-footer h3 { font-size: 24px; font-family: 'Times New Roman', serif; margin-bottom: 12px; }
+.s4-footer p { color: #999; font-size: 14px; margin-bottom: 24px; }
+.s4-footer .btn-group { display: flex; gap: 16px; justify-content: center; }
+.s4-footer button {
+  padding: 12px 28px; border-radius: 24px; font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: sans-serif;
+}
+.s4-footer .btn-white { background: #fff; color: #111; border: none; }
+.s4-footer .btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+
+/* ── Scene 5: Cost Savings Calculator ────────────────────────────────── */
+
+.s5-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #3b82f6, #6366f1, #7c3aed);
+}
+
+.s5-container {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1100px;
+  animation: s5-container-in 5s 17.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes s5-container-in {
+  0% { opacity: 0; transform: translate(-50%, 100%); }
+  30% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.s5-title {
+  text-align: center; color: #fff; margin-bottom: 32px;
+  font-family: 'Times New Roman', serif;
+}
+.s5-title h2 { font-size: 42px; font-weight: 700; margin-bottom: 8px; }
+.s5-title p { color: rgba(255,255,255,0.7); font-size: 16px; font-family: sans-serif; }
+
+.s5-panels {
+  display: flex; gap: 8px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1, #7c3aed);
+  border-radius: 24px; padding: 8px;
+}
+.s5-left, .s5-right {
+  flex: 1;
+  background: #fff; border-radius: 16px; padding: 32px;
+  min-height: 450px;
+}
+.s5-left h3, .s5-right h3 {
+  font-size: 18px; color: #111; margin-bottom: 20px;
+  font-family: sans-serif; font-weight: 500;
+}
+
+.s5-app-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.s5-app-icon {
+  aspect-ratio: 1;
+  border: 2px solid #eee; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: #64748b;
+  transition: all 0.2s;
+  opacity: 0;
+  animation: s5-icon-in 0.5s var(--i) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.s5-app-icon:nth-child(1) { --i: 18s; } .s5-app-icon:nth-child(2) { --i: 18.06s; }
+.s5-app-icon:nth-child(3) { --i: 18.12s; } .s5-app-icon:nth-child(4) { --i: 18.18s; }
+.s5-app-icon:nth-child(5) { --i: 18.24s; } .s5-app-icon:nth-child(6) { --i: 18.3s; }
+.s5-app-icon:nth-child(7) { --i: 18.36s; } .s5-app-icon:nth-child(8) { --i: 18.42s; }
+.s5-app-icon:nth-child(9) { --i: 18.48s; } .s5-app-icon:nth-child(10) { --i: 18.54s; }
+.s5-app-icon:nth-child(11) { --i: 18.6s; } .s5-app-icon:nth-child(12) { --i: 18.66s; }
+.s5-app-icon:nth-child(13) { --i: 18.72s; } .s5-app-icon:nth-child(14) { --i: 18.78s; }
+.s5-app-icon:nth-child(15) { --i: 18.84s; }
+
+@keyframes s5-icon-in {
+  0% { opacity: 0; transform: scale(0) rotate(20deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+.s5-app-icon.selected {
+  border-color: #7c3aed;
+  background: #f5f3ff;
+}
+
+.s5-user-input {
+  display: flex; align-items: center; gap: 12px;
+  padding-top: 20px; border-top: 1px solid #eee;
+}
+.s5-user-input label { font-size: 14px; color: #333; font-weight: 500; }
+.s5-user-btn {
+  width: 44px; height: 44px; border-radius: 10px;
+  border: none; background: #f1f1f1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #555;
+}
+.s5-user-count {
+  font-size: 20px; font-weight: 700; color: #111;
+  width: 60px; text-align: center;
+}
+
+.s5-savings {
+  font-size: 42px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  animation: s5-type-reveal 2s 19.5s steps(20) both;
+}
+@keyframes s5-type-reveal {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+.s5-cta-btn {
+  width: 100%; padding: 16px; border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff; font-size: 16px; font-weight: 700; border: none;
+  cursor: pointer; margin-top: 20px;
+  font-family: sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+
+/* ── Scene 6: Digital Wallet ────────────────────────────────────────── */
+
+.s6-glow {
+  position: absolute;
+  width: 900px; height: 900px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(21,50,40,0.8) 0%, transparent 70%);
+  animation: s6-glow-in 5s 22.3s ease-out both;
+}
+@keyframes s6-glow-in {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.s6-wallet-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: s6-wallet-drop 5s 22.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes s6-wallet-drop {
+  0% { opacity: 0; transform: translate(-50%, -50%) translateY(-120px) scale(0.8); }
+  40% { opacity: 1; transform: translate(-50%, -50%) translateY(10px) scale(1.02); }
+  60% { transform: translate(-50%, -50%) translateY(-5px) scale(0.99); }
+  100% { opacity: 1; transform: translate(-50%, -50%) translateY(0) scale(1); }
+}
+
+/* Wallet frame */
+.s6-wallet {
+  position: relative;
+  width: 380px; height: 260px;
+  perspective: 1000px;
+}
+
+.s6-wallet-back {
+  position: absolute; inset: 0;
+  background: #080808;
+  border-radius: 16px;
+  transform: translateY(8px) scale(0.98);
+  z-index: 0;
+}
+
+.s6-wallet-front {
+  position: absolute; inset: 0;
+  background: #141414;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.04);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 30px 60px -10px rgba(0,0,0,0.9);
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.s6-wallet:hover .s6-wallet-front {
+  transform: rotateX(5deg) translateY(5px);
+}
+
+.s6-wallet-texture {
+  position: absolute; inset: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.4"/></svg>');
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+}
+.s6-wallet-stitch {
+  position: absolute; inset: 12px;
+  border: 1px dashed rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+
+.s6-wallet-label {
+  position: relative; z-index: 10;
+  color: #5C7066; font-size: 10px; letter-spacing: 0.25em;
+  font-weight: 700; margin-bottom: 8px; font-family: sans-serif;
+}
+.s6-wallet-balance {
+  position: relative; z-index: 10;
+  color: #E0E0E0; font-size: 36px; font-family: 'Times New Roman', serif;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Cards */
+.s6-card {
+  position: absolute;
+  left: calc(50% - 140px);
+  width: 280px; height: 180px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom center;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 16px; color: rgba(0,0,0,0.7);
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+}
+.s6-card-gold {
+  background: linear-gradient(135deg, #E6C685, #A88B4D, #6C5528);
+  z-index: 12;
+  top: -80px;
+}
+.s6-card-silver {
+  background: linear-gradient(135deg, #E2E2E2, #9CA3AF, #4B5563);
+  z-index: 11;
+  top: -60px;
+}
+
+.s6-card .card-number {
+  font-size: 16px; letter-spacing: 3px; margin-bottom: 12px;
+}
+.s6-card .card-bottom {
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.s6-card .card-holder { font-size: 9px; text-transform: uppercase; opacity: 0.7; }
+.s6-card .card-name { font-size: 11px; font-weight: bold; text-transform: uppercase; }
+.s6-card .card-expiry { text-align: right; }
+.s6-card .card-expiry-label { font-size: 9px; text-transform: uppercase; opacity: 0.7; }
+.s6-card .card-expiry-date { font-size: 11px; font-weight: bold; }
+
+.s6-card-texture {
+  position: absolute; inset: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.3"/></svg>');
+  mix-blend-overlay; pointer-events: none;
+}
+
+.s6-card-shine {
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+  background-size: 200% 100%;
+  background-position: 200% 0;
+  pointer-events: none;
+  animation: s6-shine 3s 26.5s ease-in-out infinite;
+}
+@keyframes s6-shine {
+  0% { background-position: 200% 0; }
+  50% { background-position: -200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Card hover (single class toggle via CSS for demo) */
+.s6-wallet-wrap.hover .s6-card-gold { transform: translateY(-70px) scale(1.03); }
+.s6-wallet-wrap.hover .s6-card-silver { transform: translateY(-60px) scale(1.02); }
+
+/* We'll use the active state via the wallet interaction pseudo-classes */
+.s6-card-gold.active {
+  transform: translateY(60px) scale(1.05);
+  z-index: 40;
+}
+
+.s6-hint {
+  position: absolute;
+  bottom: 60px; left: 50%;
+  transform: translateX(-50%);
+  color: rgba(136,160,150,0.4);
+  font-size: 10px; letter-spacing: 0.2em; font-family: sans-serif;
+  font-weight: 500;
+}
+
+/* ── Scene 7: Neon CTA ──────────────────────────────────────────────── */
+
+.s7-container {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: s7-fade-in 3s 27.3s ease-out both;
+}
+@keyframes s7-fade-in {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.s7-btn {
+  position: relative;
+  padding: 20px 60px;
+  background: transparent;
+  border: 2px solid #A020F0;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 20px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  outline: none;
+  animation: s7-btn-appear 3s 27.5s ease-out both, s7-btn-pulse 2s 29s ease-in-out infinite;
+}
+@keyframes s7-btn-appear {
+  0% { opacity: 0; transform: scale(0.8); filter: brightness(0.3); }
+  60% { opacity: 1; transform: scale(1.05); filter: brightness(1.2); }
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+@keyframes s7-btn-pulse {
+  0%, 100% { box-shadow: 0 0 5px #A020F0, 0 0 10px rgba(160,32,240,0.3); }
+  50% { box-shadow: 0 0 20px #A020F0, 0 0 40px rgba(160,32,240,0.2); }
+}
+
+.s7-btn-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #A020F0;
+  width: 0;
+  animation: s7-type 2s 28s steps(15) both, s7-blink 0.8s step-end 28s infinite;
+}
+@keyframes s7-type {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+@keyframes s7-blink {
+  0%, 100% { border-color: #A020F0; }
+  50% { border-color: transparent; }
+}
+
+.s7-sub {
+  color: rgba(255,255,255,0.4);
+  font-size: 14px; font-family: sans-serif;
+  margin-top: 24px;
+  letter-spacing: 0.1em;
+  font-weight: 300;
+}
+
+/* ── Scene 8: Logo Return ────────────────────────────────────────────── */
+
+.s8-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.06);
+  font-size: 72px;
+  letter-spacing: 0.25em;
+  font-weight: 200;
+  animation: s8-logo-in 2s 30.5s ease-out both;
+}
+@keyframes s8-logo-in {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  40% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+  70% { transform: translate(-50%, -50%) scale(0.98); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ── Ambient BG transitions ─────────────────────────────────────────── */
+.ambient-bg {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: #051810;
+  transition: background 1s ease;
+}
+
+/* ── Cursor keyframe path ──────────────────────────────────────────── */
+.cursor-path {
+  animation: cursor-move 32s linear infinite;
+}
+@keyframes cursor-move {
+  /* Scene 1: off-screen (no cursor) */
+  0%, 9% { opacity: 0; transform: translate(-50%, -50%); }
+  /* Scene 2: cursor enters top-center, moves to dock item 3 */
+  9.5% { opacity: 1; transform: translate(960px, 100px); }
+  11% { opacity: 1; transform: translate(580px, 880px); }
+  /* Scene 2 click */
+  12.5% { opacity: 1; transform: translate(580px, 880px) scale(0.8); }
+  13% { opacity: 1; transform: translate(580px, 880px) scale(1); }
+  /* Move off */
+  15% { opacity: 0; transform: translate(1920px, 500px); }
+  /* Scene 4: cursor appears for comparison tooltip */
+  38% { opacity: 0; transform: translate(-100px, -100px); }
+  45% { opacity: 1; transform: translate(400px, 500px); }
+  48% { opacity: 1; transform: translate(400px, 500px) scale(0.8); }
+  50% { opacity: 0; transform: translate(1920px, 600px); }
+  /* Scene 5: cursor clicks + button */
+  53% { opacity: 0; transform: translate(-100px, -100px); }
+  60% { opacity: 1; transform: translate(920px, 730px); }
+  63% { opacity: 1; transform: translate(920px, 730px) scale(0.8); }
+  64% { opacity: 1; transform: translate(920px, 730px) scale(1); }
+  68% { opacity: 0; transform: translate(1920px, 800px); }
+  /* Scene 6: cursor hovers, clicks wallet */
+  69% { opacity: 0; transform: translate(-100px, -100px); }
+  76% { opacity: 1; transform: translate(960px, 450px); }
+  80% { opacity: 1; transform: translate(960px, 450px) scale(0.8); }
+  81% { opacity: 1; transform: translate(960px, 450px) scale(1); }
+  84% { opacity: 0; transform: translate(1920px, 100px); }
+  /* Remaining scenes: off */
+  85%, 100% { opacity: 0; transform: translate(-100px, -100px); }
+}
+</style>
+</head>
+<body>
+
+<div class="viewport" id="viewport">
+  <!-- Ambient BG (persistent) -->
+  <div class="ambient-bg"></div>
+
+  <!-- ── SCENE 1: Brand + Dock ── -->
+  <div class="scene scene-1">
+    <div class="s1-logo">AI BRAND ARCHITECT</div>
+    <div class="s1-dock">
+      <div class="s1-dock-item" style="font-size:16px;">&#x2302;</div>
+      <div class="s1-dock-item">&#x1F50D;</div>
+      <div class="s1-dock-item" style="font-size:20px;">&#x1F4C1;</div>
+      <div class="s1-dock-item" style="font-size:16px;">&#x1F514;</div>
+      <div class="s1-dock-item">&#x2709;</div>
+      <div class="s1-dock-item">&#x1F4F7;</div>
+      <div class="s1-dock-item">&#x2665;</div>
+      <div class="s1-dock-item">&#x2699;</div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 2: Interactive Folder ── -->
+  <div class="scene scene-2">
+    <div class="s2-glow"></div>
+    <div class="s2-folder-wrap">
+      <div class="s2-folder">
+        <div class="s2-folder-back">
+          <div class="s2-folder-tab"></div>
+          <div class="s2-paper s2-paper-1">&#x1F4C4;</div>
+          <div class="s2-paper s2-paper-2">&#x1F5BC;</div>
+          <div class="s2-paper s2-paper-3">&#x1F4D6;</div>
+        </div>
+        <div class="s2-flap-left"><div class="s2-flap-label">RESOURCES</div></div>
+        <div class="s2-flap-right"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 3: Pricing Section ── -->
+  <div class="scene scene-3">
+    <div class="s3-bg"></div>
+    <div class="s3-pan">
+      <div class="s3-header">
+        <div class="s3-header-label">
+          <span>$</span> Flexible plans
+        </div>
+        <h1>Choose the plan that <br><em>best fits</em> your needs</h1>
+      </div>
+      <div class="s3-cards">
+        <!-- Standard -->
+        <div class="s3-card s3-card-1">
+          <div class="s3-card-gradient" style="background:linear-gradient(180deg,rgba(59,130,246,0.1),transparent)"></div>
+          <div class="icon" style="color:#3b82f6;">&#x1F4C4;</div>
+          <h3>Standard</h3>
+          <div class="desc">Pay-as-you-go for early-stage teams</div>
+          <div class="price">Free</div>
+          <button class="btn-primary">Get started</button>
+          <div style="color:#3b82f6;font-size:10px;letter-spacing:1px;font-weight:600;margin-bottom:16px;">CORE FUNCTIONALITY</div>
+          <ul class="s3-feature-list">
+            <li>Parse API</li>
+            <li>Extract API</li>
+            <li>30+ Supported File Types</li>
+            <li>Up to 5 seats</li>
+          </ul>
+        </div>
+        <!-- Growth -->
+        <div class="s3-card s3-card-2">
+          <div class="s3-card-gradient" style="background:linear-gradient(180deg,rgba(101,163,13,0.1),transparent)"></div>
+          <div class="s3-badge">Most Popular</div>
+          <div class="icon" style="color:#65a30d;">&#x2197;</div>
+          <h3>Growth</h3>
+          <div class="desc">Built for scaling teams</div>
+          <div class="price">Custom pricing</div>
+          <button class="btn-primary">Get started</button>
+          <div style="color:#65a30d;font-size:10px;letter-spacing:1px;font-weight:600;margin-bottom:16px;">EVERYTHING IN STANDARD, PLUS:</div>
+          <ul class="s3-feature-list">
+            <li>Volume Discounts</li>
+            <li>Zero Data Retention</li>
+            <li>Premium Rate Limits</li>
+            <li>Priority Support</li>
+          </ul>
+        </div>
+        <!-- Enterprise -->
+        <div class="s3-card s3-card-3">
+          <div class="s3-card-gradient" style="background:linear-gradient(180deg,rgba(192,38,211,0.1),transparent)"></div>
+          <div class="icon" style="color:#c026d3;">&#x1F3E2;</div>
+          <h3>Enterprise</h3>
+          <div class="desc">Built for full control & custom needs</div>
+          <div class="price">Custom pricing</div>
+          <button class="btn-secondary">Contact sales &rarr;</button>
+          <div style="color:#c026d3;font-size:10px;letter-spacing:1px;font-weight:600;margin-bottom:16px;">EVERYTHING IN GROWTH, PLUS:</div>
+          <ul class="s3-feature-list">
+            <li>VPC Deployments</li>
+            <li>Custom MSA & SLA</li>
+            <li>Dedicated On-Call Support</li>
+            <li>SSO & SAML</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 4: Comparison Table ── -->
+  <div class="scene scene-4">
+    <div class="s4-container">
+      <div class="s4-header">
+        <div></div>
+        <div><div class="s4-plan-name">Free Plan</div><button class="s4-plan-btn outline">Sign Up</button></div>
+        <div><div class="s4-plan-name">Growth Plan</div><button class="s4-plan-btn solid">Start Free</button></div>
+        <div><div class="s4-plan-name">Enterprise</div><button class="s4-plan-btn outline">Contact Sales</button></div>
+      </div>
+
+      <div class="s4-section">
+        <div class="s4-section-title">Usage</div>
+        <div class="s4-row"><span class="s4-row-name">Saved reports</span><span class="s4-row-cell">5 per seat</span><span class="s4-row-cell">Unlimited</span><span class="s4-row-cell">Unlimited</span></div>
+        <div class="s4-row"><span class="s4-row-name">Monthly events</span><span class="s4-row-cell">Up to 1M</span><span class="s4-row-cell">Up to 20M</span><span class="s4-row-cell">Up to 1T</span></div>
+        <div class="s4-row"><span class="s4-row-name">Seats</span><span class="s4-row-cell">Unlimited</span><span class="s4-row-cell">Unlimited</span><span class="s4-row-cell">Unlimited</span></div>
+      </div>
+
+      <div class="s4-section s4-section-2">
+        <div class="s4-section-title">Analytics</div>
+        <div class="s4-row">
+          <span class="s4-row-name">Insights, funnels, retention <span class="info">i</span></span>
+          <span class="s4-row-cell"><span class="s4-check">&#10003;</span></span>
+          <span class="s4-row-cell"><span class="s4-check">&#10003;</span></span>
+          <span class="s4-row-cell"><span class="s4-check">&#10003;</span></span>
+        </div>
+        <div class="s4-row">
+          <span class="s4-row-name">Multi-touch attribution <span class="info">i</span></span>
+          <span class="s4-row-cell"><span class="s4-cross">&#10007;</span></span>
+          <span class="s4-row-cell"><span class="s4-check">&#10003;</span></span>
+          <span class="s4-row-cell"><span class="s4-check">&#10003;</span></span>
+        </div>
+        <div class="s4-row">
+          <span class="s4-row-name">Anomaly detection <span class="info">i</span></span>
+          <span class="s4-row-cell"><span class="s4-cross">&#10007;</span></span>
+          <span class="s4-row-cell"><span class="s4-cross">&#10007;</span></span>
+          <span class="s4-row-cell"><span class="s4-check">&#10003;</span></span>
+        </div>
+        <div class="s4-row">
+          <span class="s4-row-name">Feature Flags <span class="info">i</span></span>
+          <span class="s4-row-cell"><span class="s4-cross">&#10007;</span></span>
+          <span class="s4-row-cell"><span class="s4-cross">&#10007;</span></span>
+          <span class="s4-row-cell"><span style="color:#888;font-size:12px;">Add-on</span></span>
+        </div>
+      </div>
+
+      <div class="s4-footer">
+        <h3>Ready to get started?</h3>
+        <p>Join over 26,000 companies using our platform to grow their business.</p>
+        <div class="btn-group">
+          <button class="btn-white">Create Free Account</button>
+          <button class="btn-ghost">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 5: Cost Savings Calculator ── -->
+  <div class="scene scene-5">
+    <div class="s5-bg"></div>
+    <div class="s5-container">
+      <div class="s5-title">
+        <h2>Cut Costs with Our Platform</h2>
+        <p>See how much you can save by consolidating your tools.</p>
+      </div>
+      <div class="s5-panels">
+        <div class="s5-left">
+          <h3>Which apps do you use?</h3>
+          <div class="s5-app-grid">
+            <div class="s5-app-icon selected">&#x1F4AC;</div>
+            <div class="s5-app-icon selected">&#x2601;</div>
+            <div class="s5-app-icon selected">&#x1F4CA;</div>
+            <div class="s5-app-icon selected">&#x1F3AE;</div>
+            <div class="s5-app-icon">&#x1F4BB;</div>
+            <div class="s5-app-icon">&#x2709;</div>
+            <div class="s5-app-icon">&#x1F4F1;</div>
+            <div class="s5-app-icon">&#x1F3A5;</div>
+            <div class="s5-app-icon">&#x1F4DD;</div>
+            <div class="s5-app-icon">&#x1F465;</div>
+            <div class="s5-app-icon">&#x1F5B1;</div>
+            <div class="s5-app-icon">&#x1F4E6;</div>
+            <div class="s5-app-icon">&#x1F4C8;</div>
+            <div class="s5-app-icon">&#x2699;</div>
+            <div class="s5-app-icon">&#x1F50C;</div>
+          </div>
+          <div class="s5-user-input">
+            <label>How many users?</label>
+            <button class="s5-user-btn">&minus;</button>
+            <span class="s5-user-count">500</span>
+            <button class="s5-user-btn">+</button>
+          </div>
+        </div>
+        <div class="s5-right">
+          <h3>Your savings</h3>
+          <div class="s5-savings">Save $48,000/year</div>
+          <p style="color:#777;font-size:13px;line-height:1.6;">Our platform can save a 500-person company $48,000 per year compared to your current tools.</p>
+          <button class="s5-cta-btn">
+            Start saving today &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 6: Digital Wallet ── -->
+  <div class="scene scene-6">
+    <div class="s6-glow"></div>
+    <div class="s6-wallet-wrap" id="s6Wallet">
+      <div class="s6-wallet">
+        <div class="s6-wallet-back"></div>
+        <div class="s6-wallet-front">
+          <div class="s6-wallet-texture"></div>
+          <div class="s6-wallet-stitch"></div>
+          <div class="s6-wallet-label">TOTAL BALANCE</div>
+          <div class="s6-wallet-balance" id="s6Balance">$250,000</div>
+        </div>
+        <div class="s6-card s6-card-silver">
+          <div class="s6-card-texture"></div>
+          <div class="card-number" style="color:rgba(0,0,0,0.65);">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 8832</div>
+          <div class="card-bottom">
+            <div>
+              <div class="card-holder" style="color:rgba(0,0,0,0.5);">Card Holder</div>
+              <div class="card-name" style="color:rgba(0,0,0,0.7);">A. Hamilton</div>
+            </div>
+            <div class="card-expiry">
+              <div class="card-expiry-label" style="color:rgba(0,0,0,0.5);">Expires</div>
+              <div class="card-expiry-date" style="color:rgba(0,0,0,0.7);">12/26</div>
+            </div>
+          </div>
+        </div>
+        <div class="s6-card s6-card-gold">
+          <div class="s6-card-texture"></div>
+          <div class="s6-card-shine"></div>
+          <div class="card-number" style="color:rgba(62,44,15,0.7);">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 4289</div>
+          <div class="card-bottom">
+            <div>
+              <div class="card-holder" style="color:rgba(62,44,15,0.5);">Card Holder</div>
+              <div class="card-name" style="color:rgba(62,44,15,0.7);">A. Hamilton</div>
+            </div>
+            <div class="card-expiry">
+              <div class="card-expiry-label" style="color:rgba(62,44,15,0.5);">Expires</div>
+              <div class="card-expiry-date" style="color:rgba(62,44,15,0.7);">09/28</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="s6-hint">Select a card</div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 7: Neon CTA ── -->
+  <div class="scene scene-7">
+    <div class="s7-container">
+      <button class="s7-btn">
+        <span class="s7-btn-text">Start Building</span>
+      </button>
+      <div class="s7-sub">AI Brand Architect &mdash; Enterprise Suite</div>
+    </div>
+  </div>
+
+  <!-- ── SCENE 8: Logo Return ── -->
+  <div class="scene scene-8">
+    <div class="s8-logo">AI BRAND ARCHITECT</div>
+  </div>
+
+  <!-- ── Cursor ── -->
+  <div class="cursor cursor-path" id="cursor">
+    <div class="cursor-ring"></div>
+    <div class="cursor-inner"></div>
+    <div class="cursor-dot"></div>
+  </div>
+</div>
+
+<script>
+// ── Scene 6: Wallet card interaction via timeline-based class toggling ──
+const walletWrap = document.getElementById('s6Wallet');
+const balanceEl = document.getElementById('s6Balance');
+const goldCard = document.querySelector('.s6-card-gold');
+const silverCard = document.querySelector('.s6-card-silver');
+const timeline = [
+  // Hover starts at ~23.5s
+  { time: 23.5, action: 'hover' },
+  // Click gold card at ~25s
+  { time: 25, action: 'click-gold' },
+  // Reset at ~27s (scene end)
+  { time: 27, action: 'reset' },
+];
+
+function updateTimeline() {
+  const now = (performance.now() / 1000) % 32;
+  for (const entry of timeline) {
+    if (now >= entry.time) {
+      switch (entry.action) {
+        case 'hover':
+          walletWrap.classList.add('hover');
+          break;
+        case 'click-gold':
+          goldCard.classList.add('active');
+          silverCard.style.transform = 'translateY(-90px) scale(1)';
+          goldCard.style.transform = 'translateY(60px) scale(1.05)';
+          goldCard.style.zIndex = '40';
+          balanceEl.textContent = '$12,450.00';
+          break;
+        case 'reset':
+          walletWrap.classList.remove('hover');
+          goldCard.classList.remove('active');
+          goldCard.style.transform = '';
+          goldCard.style.zIndex = '';
+          silverCard.style.transform = '';
+          balanceEl.textContent = '$250,000';
+          break;
+      }
+    }
+  }
+  requestAnimationFrame(updateTimeline);
+}
+updateTimeline();
+
+// ── Scale viewport to fit window ──
+function fitViewport() {
+  const vp = document.getElementById('viewport');
+  const scaleX = window.innerWidth / 1920;
+  const scaleY = window.innerHeight / 1080;
+  const scale = Math.min(scaleX, scaleY) * 0.92;
+  vp.style.transform = `scale(${scale})`;
+  vp.style.transformOrigin = 'center center';
+}
+window.addEventListener('resize', fitViewport);
+fitViewport();
+</script>
+</body>
+</html>

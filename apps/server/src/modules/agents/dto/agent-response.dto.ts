@@ -32,4 +32,7 @@ export class AgentResponseDto {
 
   @ApiProperty()
   model: string;
+
+  @ApiPropertyOptional()
+  reflection?: any;
 }

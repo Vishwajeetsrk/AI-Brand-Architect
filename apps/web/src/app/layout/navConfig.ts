@@ -4,7 +4,7 @@ import {
   Copy, Layers, Palette, Bot, GitBranch, Upload, Users, Activity,
   BarChart3, Settings, CreditCard, Key, Bell, User, HelpCircle,
   BookOpen, Clock, Terminal, FileText, Gauge, Plug, Shield, ShoppingCart,
-  GraduationCap, Crown, Contact, MessageSquare, Zap,
+  GraduationCap, Crown, Contact, MessageSquare, Zap, Cpu,
 } from "lucide-react";
 import type { NavItem, NavSection, Screen } from "../types";
 
@@ -73,6 +73,7 @@ export const NAV_SECTIONS: NavSection[] = [
     label: "Insights",
     items: [
       { id: "analytics", label: "Analytics", icon: BarChart3 },
+      { id: "ai-monitoring", label: "AI Monitoring", icon: Cpu, badge: "New" },
       { id: "integrations", label: "Integrations", icon: Plug },
     ],
   },
@@ -101,6 +102,7 @@ export const APP_SCREENS: Screen[] = [
   "analytics", "integrations", "settings", "billing", "api-keys",
   "notifications", "profile", "help", "docs", "changelog",
   "mission-control", "mcp-tools", "knowledge-hub", "cms-dashboard", "automation", "security",
+  "ai-monitoring",
   "collaboration",
   "marketplace",
   "lms",
@@ -131,4 +133,5 @@ export const LABEL_MAP: Partial<Record<Screen, string>> = {
   "security": "Security Platform",
   "collaboration": "Collaboration Hub",
   "lms": "Learning Platform",
+  "ai-monitoring": "AI Monitoring",
 };
