@@ -29,6 +29,20 @@ import { SearchModule } from './modules/search/search.module';
 import { ReflectionModule } from './modules/reflection/reflection.module';
 import { PlannerModule } from './modules/planner/planner.module';
 import { AiMonitoringModule } from './modules/ai-monitoring/ai-monitoring.module';
+import { CareerModule } from './modules/career/career.module';
+import { AISafetyModule } from './modules/ai-safety/ai-safety.module';
+import { FeatureFlagsModule } from './modules/feature-flags/feature-flags.module';
+import { ComplianceModule } from './modules/compliance/compliance.module';
+import { VisionModule } from './modules/vision/vision.module';
+import { VoiceModule } from './modules/voice/voice.module';
+import { CodeIntelligenceModule } from './modules/code-intelligence/code-intelligence.module';
+import { DocumentIntelligenceModule } from './modules/document-intelligence/document-intelligence.module';
+import { CareerRoadmapModule } from './modules/career/career-roadmap.module';
+import { MediaModule } from './modules/media/media.module';
+import { CoachingModule } from './modules/coaching/coaching.module';
+import { GamificationModule } from './modules/gamification/gamification.module';
+import { ShowcaseModule } from './modules/showcase/showcase.module';
+import { ChallengesModule } from './modules/challenges/challenges.module';
 
 @Module({
   imports: [
@@ -62,6 +76,20 @@ import { AiMonitoringModule } from './modules/ai-monitoring/ai-monitoring.module
     ReflectionModule,
     PlannerModule,
     AiMonitoringModule,
+    CareerModule,
+    AISafetyModule,
+    FeatureFlagsModule,
+    ComplianceModule,
+    VisionModule,
+    VoiceModule,
+    CodeIntelligenceModule,
+    DocumentIntelligenceModule,
+    CareerRoadmapModule,
+    MediaModule,
+    CoachingModule,
+    GamificationModule,
+    ShowcaseModule,
+    ChallengesModule,
   ],
 })
 export class AppModule {}

@@ -1,10 +1,11 @@
 import {
   LayoutDashboard, FolderOpen, Wand2, Sparkles, Globe, Layout,
   Megaphone, ImagePlus, Monitor, Share2, Mail, Clipboard,
-  Copy, Layers, Palette, Bot, GitBranch, Upload, Users, Activity,
+  Copy, Layers, Palette, Bot,   GitBranch, Upload, Users, Activity,
   BarChart3, Settings, CreditCard, Key, Bell, User, HelpCircle,
   BookOpen, Clock, Terminal, FileText, Gauge, Plug, Shield, ShoppingCart,
-  GraduationCap, Crown, Contact, MessageSquare, Zap, Cpu,
+  GraduationCap, Crown, Contact, MessageSquare, Zap, Cpu, Briefcase, ShieldAlert, Flag,
+  Trophy, Gamepad2, Video, Code2, Brain, MessageCircle, Image, MapIcon,
 } from "lucide-react";
 import type { NavItem, NavSection, Screen } from "../types";
 
@@ -30,6 +31,8 @@ export const NAV_SECTIONS: NavSection[] = [
       { id: "social-media", label: "Social Media", icon: Share2 },
       { id: "email-builder", label: "Email Builder", icon: Mail },
       { id: "form-builder", label: "Form Builder", icon: Clipboard },
+      { id: "thumbnail-generator", label: "Thumbnail Gen", icon: Image, badge: "New" },
+      { id: "code-playground", label: "Code Playground", icon: Code2, badge: "New" },
     ],
   },
   {
@@ -74,13 +77,38 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { id: "analytics", label: "Analytics", icon: BarChart3 },
       { id: "ai-monitoring", label: "AI Monitoring", icon: Cpu, badge: "New" },
+      { id: "ai-safety", label: "AI Safety", icon: ShieldAlert, badge: "New" },
       { id: "integrations", label: "Integrations", icon: Plug },
+      { id: "feature-flags", label: "Feature Flags", icon: Flag, badge: "New" },
     ],
   },
   {
     label: "Security",
     items: [
       { id: "security", label: "Security Platform", icon: Shield },
+    ],
+  },
+  {
+    label: "Learning & Growth",
+    items: [
+      { id: "coaching", label: "Coaching Hub", icon: MessageSquare, badge: "New" },
+      { id: "ai-tutor", label: "AI Tutor", icon: Brain, badge: "New" },
+      { id: "leaderboard", label: "Leaderboard", icon: Trophy, badge: "New" },
+      { id: "challenges", label: "Coding Challenges", icon: Gamepad2, badge: "New" },
+    ],
+  },
+  {
+    label: "Community",
+    items: [
+      { id: "showcase", label: "Project Showcase", icon: Video, badge: "New" },
+      { id: "community-chat", label: "Community Chat", icon: MessageCircle, badge: "New" },
+    ],
+  },
+  {
+    label: "Career",
+    items: [
+      { id: "career", label: "Career Platform", icon: Briefcase, badge: "New" },
+      { id: "career-roadmap", label: "Career Roadmap", icon: MapIcon, badge: "New" },
     ],
   },
 ];
@@ -103,10 +131,22 @@ export const APP_SCREENS: Screen[] = [
   "notifications", "profile", "help", "docs", "changelog",
   "mission-control", "mcp-tools", "knowledge-hub", "cms-dashboard", "automation", "security",
   "ai-monitoring",
+  "ai-safety",
+  "feature-flags",
+  "career",
   "collaboration",
   "marketplace",
   "lms",
   "creator",
+  "career-roadmap",
+  "thumbnail-generator",
+  "coaching",
+  "leaderboard",
+  "showcase",
+  "challenges",
+  "ai-tutor",
+  "code-playground",
+  "community-chat",
 ];
 
 export const LABEL_MAP: Partial<Record<Screen, string>> = {
@@ -134,4 +174,16 @@ export const LABEL_MAP: Partial<Record<Screen, string>> = {
   "collaboration": "Collaboration Hub",
   "lms": "Learning Platform",
   "ai-monitoring": "AI Monitoring",
+  "ai-safety": "AI Safety",
+  "feature-flags": "Feature Flags",
+  "career": "Career Platform",
+  "career-roadmap": "Career Roadmap",
+  "thumbnail-generator": "Thumbnail Generator",
+  "coaching": "Coaching Hub",
+  "leaderboard": "Leaderboard",
+  "showcase": "Project Showcase",
+  "challenges": "Coding Challenges",
+  "ai-tutor": "AI Tutor",
+  "code-playground": "Code Playground",
+  "community-chat": "Community Chat",
 };

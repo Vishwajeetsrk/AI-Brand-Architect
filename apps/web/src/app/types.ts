@@ -8,12 +8,14 @@ export type Screen =
   | "analytics" | "integrations" | "settings" | "billing" | "api-keys"
   | "notifications" | "profile" | "help" | "docs" | "changelog"
   | "mcp-tools" | "knowledge-hub" | "cms-dashboard" | "mission-control" | "marketplace" | "security"
-  | "ai-monitoring"
+  | "ai-monitoring" | "ai-safety" | "feature-flags" | "career"
   | "collaboration"
   | "automation"
   | "lms"
   | "crm"
   | "creator"
+  | "community-chat" | "showcase" | "challenges" | "coaching" | "leaderboard"
+  | "thumbnail-generator" | "code-playground" | "ai-tutor" | "career-roadmap"
   | "pricing" | "terms" | "privacy" | "cookie" | "license" | "404" | "maintenance";
 
 export interface NavItem { id: Screen; label: string; icon: React.ElementType; badge?: string }
